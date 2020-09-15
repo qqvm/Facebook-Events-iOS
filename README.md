@@ -23,4 +23,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 
 ## Acknowledgment
 
-This project uses [GRDB](https://github.com/groue/GRDB.swift) lfor data persistance, [SwiftDate](https://github.com/malcommac/SwiftDate) for manipulation with dates and [SDWebImageSwiftUI](https://github.com/SDWebImage/SDWebImageSwiftUI) for web images.
+This project uses [GRDB](https://github.com/groue/GRDB.swift) for data persistance, [SwiftDate](https://github.com/malcommac/SwiftDate) for manipulation with dates and [SDWebImageSwiftUI](https://github.com/SDWebImage/SDWebImageSwiftUI) for web images.
