@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "GRDB",
+        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "b2f5d425b67024e1c5356ef0d6e777a733015450",
+          "version": "5.0.0-beta.11"
+        }
+      },
+      {
+        "package": "SDWebImage",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
+        "state": {
+          "branch": null,
+          "revision": "7a21432a370a34925046244462281bd36ebab73d",
+          "version": "5.9.1"
+        }
+      },
+      {
+        "package": "SDWebImageSwiftUI",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImageSwiftUI.git",
+        "state": {
+          "branch": null,
+          "revision": "4c7f169e39bc35d6b80d42b8eb8301bee9cd0907",
+          "version": "1.5.0"
+        }
+      },
+      {
+        "package": "SwiftDate",
+        "repositoryURL": "https://github.com/malcommac/SwiftDate.git",
+        "state": {
+          "branch": null,
+          "revision": "700dde1b3417fd4a7fd2bec9f5bc8ab2de1b96b4",
+          "version": "6.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
