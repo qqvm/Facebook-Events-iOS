@@ -46,7 +46,7 @@ struct CustomNotificationView: View {
                         }
                             .font(.system(size: 22))
                     )
-                }
+                }.padding(.top)
                 Spacer()
             }
             .navigationBarTitle("Custom notification", displayMode: .inline)

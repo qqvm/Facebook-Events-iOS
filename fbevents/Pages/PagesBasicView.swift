@@ -53,35 +53,39 @@ struct PagesBasicView: View {
                     .padding(.horizontal)
                     .padding(.top)
                 }
-                List(pages, id: \.id){(page: Page) in
-                    NavigationLink(destination: PageEventsView(isSubview: self.isSubview, pageId: page.id)){
-                        PagePlateView(page: page)
-                        .onAppear(){
-                            if self.appState.selectedView == .pages && !self.isFavoriteTab{
-                                DispatchQueue.main.async {
-                                    if !self.pagesInFocus.contains(page.id){
-                                        self.pagesInFocus.append(page.id)
+                ScrollView{
+                    ForEach(pages, id: \.id){(page: Page) in
+                        NavigationLink(destination: PageEventsView(isSubview: self.isSubview, pageId: page.id)){
+                            PagePlateView(page: page)
+                            .onAppear(){
+                                if self.appState.selectedView == .pages && !self.isFavoriteTab{
+                                    DispatchQueue.main.async {
+                                        if !self.pagesInFocus.contains(page.id){
+                                            self.pagesInFocus.append(page.id)
+                                        }
+                                    }
+                                }
+                            }
+                            .onDisappear(){
+                                if self.appState.selectedView == .pages && !self.isFavoriteTab{
+                                    DispatchQueue.main.async {
+                                        self.pagesInFocus.removeAll(where: {$0 == page.id})
                                     }
                                 }
                             }
                         }
-                        .onDisappear(){
-                            if self.appState.selectedView == .pages && !self.isFavoriteTab{
-                                DispatchQueue.main.async {
-                                    self.pagesInFocus.removeAll(where: {$0 == page.id})
-                                }
-                            }
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }.listStyle(PlainListStyle())
+                        .buttonStyle(PlainButtonStyle())
+                    }//.listStyle(PlainListStyle())
+                }.padding()
             }
             .onAppear(){
-                if self.appState.selectedView == .pages && self.isFavoriteTab{
-                    self.loadPagesFromDB()
-                }
-                else if self.appState.selectedView == .pages{
-                    self.showSearchField?.wrappedValue = true
+                if self.pages.count == 0{
+                    if self.appState.selectedView == .pages && self.isFavoriteTab{
+                        self.loadPagesFromDB()
+                    }
+                    else if self.appState.selectedView == .pages{
+                        self.showSearchField?.wrappedValue = true
+                    }
                 }
             }
         }

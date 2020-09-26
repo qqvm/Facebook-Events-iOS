@@ -54,36 +54,40 @@ struct FriendsBasicView: View {
                     .padding(.horizontal)
                     .padding(.top)
                 }
-                List(friends, id: \.id){(friend: User) in
-                    NavigationLink(destination: UserEventsView(isSubview: self.isSubview, originId: self.originId, user: friend)){
-                            UserPlateView(friend: friend)
-                        .onAppear(){
-                            if !self.isSubview && !self.isFavoriteTab{
-                                DispatchQueue.main.async {
-                                    if !self.friendsInFocus.contains(friend.id){
-                                        self.friendsInFocus.append(friend.id)
+                ScrollView{
+                    ForEach(friends, id: \.id){(friend: User) in
+                        NavigationLink(destination: UserEventsView(isSubview: self.isSubview, originId: self.originId, user: friend)){
+                                UserPlateView(friend: friend)
+                            .onAppear(){
+                                if !self.isSubview && !self.isFavoriteTab{
+                                    DispatchQueue.main.async {
+                                        if !self.friendsInFocus.contains(friend.id){
+                                            self.friendsInFocus.append(friend.id)
+                                        }
+                                    }
+                                }
+                            }
+                            .onDisappear(){
+                                if !self.isSubview && !self.isFavoriteTab{
+                                    DispatchQueue.main.async {
+                                        self.friendsInFocus.removeAll(where: {$0 == friend.id})
                                     }
                                 }
                             }
                         }
-                        .onDisappear(){
-                            if !self.isSubview && !self.isFavoriteTab{
-                                DispatchQueue.main.async {
-                                    self.friendsInFocus.removeAll(where: {$0 == friend.id})
-                                }
-                            }
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }.listStyle(PlainListStyle())
+                        .buttonStyle(PlainButtonStyle())
+                    }//.listStyle(PlainListStyle())
+                }.padding()
             }
             .onAppear(){
-                if self.isFavoriteTab{
-                    self.loadFriendsFromDB()
-                }
-                else if self.appState.settings.userId > 0 && !self.isSubview{
-                    if self.friends.count == 0 && self.appState.isInternetAvailable{
-                        self.loadMyFriendsPage()
+                if self.friends.count == 0{
+                    if self.isFavoriteTab{
+                        self.loadFriendsFromDB()
+                    }
+                    else if self.appState.settings.userId > 0 && !self.isSubview{
+                        if self.friends.count == 0 && self.appState.isInternetAvailable{
+                            self.loadMyFriendsPage()
+                        }
                     }
                 }
             }

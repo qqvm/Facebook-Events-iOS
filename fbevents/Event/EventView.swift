@@ -119,29 +119,19 @@ struct EventView: View {
                                                 }
                                             }) {
                                                 if self.notifyEnabled {
-                                                    self.notifyEnabled.toggle()
+                                                    DispatchQueue.main.async{
+                                                        self.notifyEnabled.toggle()
+                                                    }
                                                     self.event!.deleteNotification()
                                                 }
                                                 else{
-                                                    self.customNotificationDate = self.event!.getProposedNotificationDate()
-                                                    self.showCustomNotificationView = true
+                                                    DispatchQueue.main.async{
+                                                        self.customNotificationDate = self.event!.getProposedNotificationDate()
+                                                        self.showCustomNotificationView = true
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }
-                                    .padding(.trailing)
-                                    .sheet(isPresented: self.$showCustomNotificationView, onDismiss: {
-                                        self.UpdateNotificationStatus()
-                                    }){
-                                        CustomNotificationView(customNotificationDate: self.$customNotificationDate, dateRange: self.event!.startDate > Date() ? Date()...self.event!.startDate : self.event!.endDate == nil ? Date()...Calendar.current.date(byAdding: .day, value: 1, to: Date())! : Date()...self.event!.endDate!, title: self.event!.name, subtitle: self.event!.getProposedNotificationSubtitle()){
-                                            self.event?.setNotification(date: self.customNotificationDate)
-                                            DispatchQueue.main.async {
-                                                if !self.isFavorite{
-                                                    self.isFavorite.toggle()
-                                                }
-                                                self.notifyEnabled = true
-                                            }
-                                        }
+                                        }.padding(.trailing)
                                     }
                                 }
                                 Button(action: {
@@ -268,6 +258,25 @@ struct EventView: View {
                 }
                 .sheet(isPresented: self.$showShareView){
                     ShareView(activityItems: [URL(string: "https://www.facebook.com/events/\(self.event!.id)/")!])
+                }
+                if self.showCustomNotificationView{
+                    VStack{
+                        Text("")
+                        .frame(width: 0, height: 0)
+                    }
+                    .sheet(isPresented: self.$showCustomNotificationView, onDismiss: {
+                        self.UpdateNotificationStatus()
+                    }){
+                        CustomNotificationView(customNotificationDate: self.$customNotificationDate, dateRange: self.event!.startDate > Date() ? Date()...self.event!.startDate : self.event!.endDate == nil ? Date()...Calendar.current.date(byAdding: .day, value: 1, to: Date())! : Date()...self.event!.endDate!, title: self.event!.name, subtitle: self.event!.getProposedNotificationSubtitle()){
+                            self.event?.setNotification(date: self.customNotificationDate)
+                            DispatchQueue.main.async {
+                                if !self.isFavorite{
+                                    self.isFavorite.toggle()
+                                }
+                                self.notifyEnabled = true
+                            }
+                        }
+                    }
                 }
             }
         }

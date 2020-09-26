@@ -30,13 +30,19 @@ extension PagesBasicView{
     
     func loadPagesFromDB(){
         do{
-            self.pages.removeAll()
+            DispatchQueue.main.async {
+                self.pages.removeAll()
+            }
             let pages = try self.appState.dbPool!.read(Page.fetchAll)
             if self.searchKeyword?.wrappedValue ?? "" != ""{
-                self.pages.append(contentsOf: pages.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                DispatchQueue.main.async {
+                    self.pages.append(contentsOf: pages.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                }
             }
             else{
-                self.pages.append(contentsOf: pages)
+                DispatchQueue.main.async {
+                    self.pages.append(contentsOf: pages)
+                }
             }
         }
         catch{

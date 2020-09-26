@@ -93,10 +93,14 @@ extension FriendsBasicView{
             self.friends.removeAll()
             let friends = try self.appState.dbPool!.read(User.fetchAll)
             if self.searchKeyword?.wrappedValue ?? "" != ""{
-                self.friends.append(contentsOf: friends.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                DispatchQueue.main.async {
+                    self.friends.append(contentsOf: friends.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                }
             }
             else{
-                self.friends.append(contentsOf: friends)
+                DispatchQueue.main.async {
+                    self.friends.append(contentsOf: friends)
+                }
             }
         }
         catch{

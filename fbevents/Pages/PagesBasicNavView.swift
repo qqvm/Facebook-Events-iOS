@@ -18,7 +18,7 @@ struct PagesBasicNavView: View {
     
     var body: some View{
         VStack{
-            PagesBasicView(isFavoriteTab: isFavoriteTab, searchKeyword: $searchKeyword, showSearchField: $showSearchField, performReload: $performReload)
+            PagesBasicView(isFavoriteTab: isFavoriteTab, searchKeyword: $searchKeyword, showSearchField: $showSearchField, performReload: $performReload).environmentObject(self.appState)
         }.navigationBarItems(leading: MenuButtonView(),
             trailing:
             HStack{

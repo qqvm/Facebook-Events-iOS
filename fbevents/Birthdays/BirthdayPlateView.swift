@@ -35,7 +35,7 @@ struct BirthdayPlateView: View {
                     return (originalDate - self.appState.settings.birthdayNotificationIntervalDays.days, originalDate)
                 }
                 else{
-                    return (originalDate - self.appState.settings.birthdayNotificationIntervalDays.days + 1.years, originalDate + 1.years)
+                    return ((originalDate - self.appState.settings.birthdayNotificationIntervalDays.days) + 1.years, originalDate + 1.years)
                 }
             }
         }
@@ -56,7 +56,7 @@ struct BirthdayPlateView: View {
     
     var body: some View {
         HStack{
-            if self.appState.settings.downloadImages{
+            if self.appState.settings.downloadImages && friend.picture != ""{
                 WebImage(url: URL(string: friend.picture))
                     .resizable()
                     .frame(width: 70, height: 70, alignment: .leading)
@@ -92,25 +92,35 @@ struct BirthdayPlateView: View {
                         }
                     }) {
                         if self.notifyEnabled {
-                            self.notifyEnabled.toggle()
+                            DispatchQueue.main.async {
+                                self.notifyEnabled.toggle()
+                            }
                             DeleteNotification(id: "friend_\(self.friend.id)")
                         }
-                        else{
-                            self.customNotificationDate = self.getProposedNotificationDate()?.0 ?? Date()
-                            self.birthDate = self.getProposedNotificationDate()?.1 ?? Date()
-                            self.showCustomNotificationView = true
+                        else if let dates = self.getProposedNotificationDate(){
+                            DispatchQueue.main.async {
+                                self.customNotificationDate = dates.0
+                                self.birthDate = dates.1
+                                if self.birthDate > Date(){
+                                    self.showCustomNotificationView = true
+                                }
+                            }
                         }
                     }
-                }
+                }.padding(.trailing)
             }
-            .padding(.trailing)
-            .sheet(isPresented: $showCustomNotificationView, onDismiss: {
-                self.updateNotificationStatus()
-            }){
-                CustomNotificationView(customNotificationDate: self.$customNotificationDate, dateRange: Date()...self.birthDate, title: self.friend.name, subtitle: "has a birthday on \(AppState.getFormattedDate(Int(self.birthDate.timeIntervalSince1970), isLong: true))"){
-                    self.setNotification(date: self.customNotificationDate, bdate: self.birthDate)
-                    DispatchQueue.main.async {
-                        self.notifyEnabled = true
+            
+            if self.showCustomNotificationView{
+                Text("")
+                .frame(width: 0, height: 0)
+                .sheet(isPresented: $showCustomNotificationView, onDismiss: {
+                    self.updateNotificationStatus()
+                }){
+                    CustomNotificationView(customNotificationDate: self.$customNotificationDate, dateRange: Date()...self.birthDate, title: self.friend.name, subtitle: "has a birthday on \(AppState.getFormattedDate(Int(self.birthDate.timeIntervalSince1970), isLong: true))"){
+                        self.setNotification(date: self.customNotificationDate, bdate: self.birthDate)
+                        DispatchQueue.main.async {
+                            self.notifyEnabled = true
+                        }
                     }
                 }
             }

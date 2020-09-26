@@ -16,11 +16,16 @@ struct PagePlateView: View {
     
     var body: some View {
         HStack{
-            if self.appState.settings.downloadImages{
+            if self.appState.settings.downloadImages && page.picture != ""{
                 WebImage(url: URL(string: page.picture))
+                    .placeholder(Image(systemName: "photo"))
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 70, height: 70, alignment: .leading)
                     .padding(.trailing)
+            }
+            else{
+                Text(page.picture)
             }
             VStack(alignment: .leading){
                 Text(page.name)

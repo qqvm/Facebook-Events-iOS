@@ -7,8 +7,6 @@
 //
 
 import SwiftUI
-import SwiftDate
-import SDWebImageSwiftUI
 
 
 struct SettingsView: View {

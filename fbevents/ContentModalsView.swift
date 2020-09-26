@@ -15,7 +15,6 @@ struct ContentModalsView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appState: AppState
     @State var showEventSheet = false
-    @State var sheetEvent: Event? = nil
     @State var notificationId = 0
     
     var body: some View {
@@ -25,64 +24,48 @@ struct ContentModalsView: View {
                 .frame(width: 0, height: 0)
             }
             .onReceive(self.urlPublisher) {
-                do{
-                    if let localUrl = ($0.object as? URL)?.absoluteString.replacingOccurrences(of: "fbevents://", with: ""){
-                        let urlContainer = localUrl.split(separator: "/")
-                        if urlContainer.count == 2{
-                            let id = Int(urlContainer[1]) ?? 0
-                            if urlContainer[0] == "event"{
-                                try self.appState.cacheDbPool!.read{db in
-                                    self.sheetEvent = try Event.fetchOne(db, key: id)
-                                }
-                                if self.sheetEvent == nil && self.appState.isInternetAvailable{
-                                    self.appState.loadEventDetails(eventId: id){ ev in
-                                        self.sheetEvent = ev
-                                        self.showEventSheet = true
+                if let localUrl = ($0.object as? URL)?.absoluteString.replacingOccurrences(of: "fbevents://", with: ""){
+                    let urlContainer = localUrl.split(separator: "/")
+                    if urlContainer.count == 2{
+                        let id = Int(urlContainer[1]) ?? 0
+                        if urlContainer[0] == "event"{
+                            DispatchQueue.main.async {
+                                self.notificationId = id
+                                self.showEventSheet = true
+                            }
+                        }
+                        else if urlContainer[0] == "user"{}
+                        else if urlContainer[0] == "page"{}
+                    }
+                }
+            }
+            if showEventSheet{
+                VStack{
+                    Text("")
+                    .frame(width: 0, height: 0)
+                }
+                .sheet(isPresented: self.$showEventSheet, onDismiss: {
+                    self.appState.selectedView = self.appState.previousView
+                    self.notificationId = 0
+                }, content: {
+                        NavigationView{
+                            VStack{
+                                if self.notificationId > 0{
+                                    VStack{
+                                        EventView(eventId: self.notificationId).environmentObject(self.appState)
                                     }
+                                    .navigationBarTitle("", displayMode: .inline)
+                                    .navigationBarItems(trailing: CloseButtonView(){
+                                        self.showEventSheet = false
+                                    })
                                 }
                                 else{
-                                    self.showEventSheet = true
+                                    Text("Failed to load event.")
                                 }
                             }
-                            else if urlContainer[0] == "user"{}
-                            else if urlContainer[0] == "page"{}
-                        }
-                    }
-                }
-                catch{
-                    self.appState.logger.log(error)
-                    DispatchQueue.main.async {
-                        self.appState.errorDescription = error.localizedDescription
-                        self.appState.showError = true
-                    }
-                }
+                        }.background(self.colorScheme == .light ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color(red: 0.13, green: 0.13, blue: 0.13))
+                    })
             }
-            VStack{
-                Text("")
-                .frame(width: 0, height: 0)
-            }
-            .sheet(isPresented: self.$showEventSheet, onDismiss: {
-                self.appState.selectedView = self.appState.previousView
-                self.sheetEvent = nil
-                self.notificationId = 0
-            }, content: {
-                    NavigationView{
-                        VStack{
-                            if self.sheetEvent != nil{
-                                VStack{
-                                    EventView(eventId: self.sheetEvent!.id).environmentObject(self.appState)
-                                }
-                                .navigationBarTitle("", displayMode: .inline)
-                                .navigationBarItems(trailing: CloseButtonView(){
-                                    self.showEventSheet = false
-                                })
-                            }
-                            else{
-                                Text("Failed to load event.")
-                            }
-                        }
-                    }.background(self.colorScheme == .light ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color(red: 0.13, green: 0.13, blue: 0.13))
-                })
             VStack{
                 Text("")
                 .frame(width: 0, height: 0)
@@ -126,17 +109,8 @@ struct ContentModalsView: View {
                         let notificationContainer = notificationId.split(separator: "_")
                         if notificationContainer.count == 2{
                             if notificationContainer[0] == "event"{
-                                self.notificationId = Int(notificationContainer[1]) ?? 0
-                                try self.appState.cacheDbPool!.read{db in
-                                    self.sheetEvent = try Event.fetchOne(db, key: self.notificationId)
-                                }
-                                if self.sheetEvent == nil && self.appState.isInternetAvailable{
-                                    self.appState.loadEventDetails(eventId: self.notificationId){ ev in
-                                        self.sheetEvent = ev
-                                        self.showEventSheet = true
-                                    }
-                                }
-                                else{
+                                DispatchQueue.main.async {
+                                    self.notificationId = Int(notificationContainer[1]) ?? 0
                                     self.showEventSheet = true
                                 }
                             }

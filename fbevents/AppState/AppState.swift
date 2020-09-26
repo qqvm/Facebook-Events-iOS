@@ -257,7 +257,15 @@ final class AppState: ObservableObject{
             let decoder = JSONDecoder()
             let backupData = try decoder.decode(BackupData.self, from: fileData)
             DispatchQueue.main.async {
+                let token = self.settings.token
+                let uid = self.settings.userId
+                let did = self.settings.deviceId
+                let aid = self.settings.advId
                 self.settings = backupData.settings
+                self.settings.token = token
+                self.settings.userId = uid
+                self.settings.deviceId = did
+                self.settings.advId = aid
             }
             for event in backupData.favoriteEvents{
                 _ = event.save(dbPool: self.dbPool!)

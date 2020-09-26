@@ -25,7 +25,7 @@ struct EventImageView: View {
             if url != nil && (self.appState.settings.downloadImages || self.appState.selectedView == .favorites){
                 WebImage(url: url)
                     .placeholder(){
-                        Image(systemName: "questionmark.circle")
+                        Image(systemName: "photo")
                         .resizable()
                         .frame(width: 70, height: 70, alignment: .center)
                     }
@@ -34,7 +34,7 @@ struct EventImageView: View {
                     .frame(minWidth: minWidth, idealWidth: maxWidth, maxWidth: maxWidth, minHeight: minHeight, idealHeight: maxHeight, maxHeight: maxHeight, alignment: .center)
             }
             else{
-                Image(systemName: "questionmark.circle")
+                Image(systemName: "photo")
                 .resizable()
                 .frame(width: 70, height: 70, alignment: .center)
                     .padding(.bottom)
