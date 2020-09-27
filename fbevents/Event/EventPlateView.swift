@@ -64,11 +64,12 @@ struct EventPlateView: View{
                             .font(.headline)
                             .fontWeight(.thin)
                         Spacer()
+                        if self.appState.selectedView == .favorites || !eventData!.expired{
                         Button(action: {
                             self.isFavorite.toggle()
                             NotificationCenter.default.post(name: Notification.Name("NeedRefreshFromDB"), object: eventData!.id) // to delete immediately from favorites screen.
                         }, label: {Image(systemName: isFavorite ? "star.fill" : "star").foregroundColor(self.appState.selectedView != .favorites && eventData!.expired ? .gray : .blue)})
-                            .disabled(self.appState.selectedView != .favorites && eventData!.expired)
+                        }
                     }.padding(.horizontal)
                     EventImageView(url: URL(string: eventData!.coverPhoto))
                     Text(eventData!.name)

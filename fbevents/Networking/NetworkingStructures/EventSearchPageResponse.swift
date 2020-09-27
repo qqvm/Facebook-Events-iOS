@@ -24,7 +24,7 @@ extension Networking {
             var eventPlace: EventPlace
             var previewSocialContext: SocialContext
             var eventDescription: Text
-            var location: LocationInfo
+            var location: LocationInfo?
             var canViewerChangeGuestStatus: Bool
             var viewerHasPendingInvite: Bool
             var isChildEvent: Bool

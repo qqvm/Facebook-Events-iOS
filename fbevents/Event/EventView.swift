@@ -134,12 +134,13 @@ struct EventView: View {
                                         }.padding(.trailing)
                                     }
                                 }
-                                Button(action: {
-                                    self.isFavorite.toggle()
-                                    NotificationCenter.default.post(name: Notification.Name("NeedRefreshFromDB"), object: self.event!.id)// to delete immediately and go to fav screen.
-                                }, label: {Image(systemName: self.isFavorite ? "star.fill" : "star")})
-                                    .padding(.trailing)
-                                    .disabled(self.appState.selectedView != .favorites && self.event!.expired)
+                                if self.appState.selectedView == .favorites || !self.event!.expired{
+                                    Button(action: {
+                                        self.isFavorite.toggle()
+                                        NotificationCenter.default.post(name: Notification.Name("NeedRefreshFromDB"), object: self.event!.id)// to delete immediately and go to fav screen.
+                                    }, label: {Image(systemName: self.isFavorite ? "star.fill" : "star")})
+                                        .padding(.trailing)
+                                }
                             }.padding(.bottom)
                         }
                         EventImageView(url: URL(string: self.event!.coverPhoto))
