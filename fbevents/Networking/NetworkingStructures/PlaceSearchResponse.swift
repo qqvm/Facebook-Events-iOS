@@ -30,9 +30,9 @@ extension Networking {
                         struct PlaceViewModel: Codable {
                             struct PlacesSnippetModel: Codable {
                                 struct Location: Codable {
-                                    var latitude: Double
-                                    var longitude: Double
-                                    var address: String
+                                    var latitude: Double?
+                                    var longitude: Double?
+                                    var address: String?
                                 }
                                 struct Rating: Codable {
                                     var value: Double

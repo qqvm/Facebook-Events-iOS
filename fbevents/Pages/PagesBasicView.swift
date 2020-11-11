@@ -53,8 +53,8 @@ struct PagesBasicView: View {
                     .padding(.horizontal)
                     .padding(.top)
                 }
-                ScrollView{
-                    ForEach(pages, id: \.id){(page: Page) in
+                VStack{
+                    List(pages, id: \.id){(page: Page) in
                         NavigationLink(destination: PageEventsView(isSubview: self.isSubview, pageId: page.id)){
                             PagePlateView(page: page)
                             .onAppear(){

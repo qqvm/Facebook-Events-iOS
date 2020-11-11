@@ -19,13 +19,13 @@ struct EventSearchView: View {
             //self.appState.logger.log("LOADED Non Search", inFocus.count, inFocus.last, nonSearchEvents.count, nonSearchEvents.last?.id)
             //self.appState.logger.log("LOADED Search", inFocus.count, inFocus.last, appState.searchEvents.count, appState.searchEvents.last?.id)
             if selectedTab > 0{
-                if self.appState.loadComplete && self.appState.settings.token != "" && self.appState.isInternetAvailable && inFocus.count > 0 &&
-                    inFocus.count <= (nonSearchEvents.count > 6 ? 6 : nonSearchEvents.count) &&
+                if self.appState.loadComplete && self.appState.settings.token != "" && self.appState.isInternetAvailable /*&& inFocus.count > 0 &&
+                    inFocus.count <= (nonSearchEvents.count > 6 ? 6 : nonSearchEvents.count)*/ &&
                     inFocus.last == nonSearchEvents.last?.id && inFocus.last != oldValue.last{
                     self.loadNonSearchEventsPage()
                 }
             }
-            else if self.appState.loadComplete && self.appState.settings.token != "" && self.appState.isInternetAvailable && inFocus.count > 0 && inFocus.count <= (appState.searchEvents.count > 7 ? 7 : appState.searchEvents.count) && inFocus.contains(appState.searchEvents.last?.id ?? -1) && inFocus.last != oldValue.last{
+            else if self.appState.loadComplete && self.appState.settings.token != "" && self.appState.isInternetAvailable && inFocus.count > 0 /*&& inFocus.count <= (appState.searchEvents.count > 7 ? 7 : appState.searchEvents.count)*/ && inFocus.contains(appState.searchEvents.last?.id ?? -1) && inFocus.last != oldValue.last{
                 self.appState.settings.filterOptions.searchKeyword == "" ? self.loadEventDiscoverPage() : self.loadEventSearchPageByKeyword()
             }
         }

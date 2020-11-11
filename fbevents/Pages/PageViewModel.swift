@@ -110,11 +110,11 @@ extension PagesBasicView{
             if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8)?.replacingOccurrences(of: "feedback_source", with: "feedbackSource") {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: "3233710406666581"),
-                    // backup doc_id 3350139948377577
+                    URLQueryItem(name: "doc_id", value: "3549057475175351"),
+                    // backup doc_id 3350139948377577, 3233710406666581
                     URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: "CometSearchResultsInitialResultsQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: "SearchCometResultsInitialResultsQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]

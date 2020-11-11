@@ -19,8 +19,8 @@ struct UserEventsView: View {
            didSet{
                //self.appState.logger.log("LOADED", eventsInFocus.count, eventsInFocus.last, friendEvents.count, friendEvents.last?.id)
                if self.appState.loadComplete && self.appState.settings.token != "" && self.eventPager.canProceed &&
-                   self.appState.isInternetAvailable && eventsInFocus.count > 0 &&
-                   eventsInFocus.count <= (friendEvents.count > 7 ? 7 : friendEvents.count) &&
+                   self.appState.isInternetAvailable /*&& eventsInFocus.count > 0 &&
+                   eventsInFocus.count <= (friendEvents.count > 7 ? 7 : friendEvents.count)*/ &&
                eventsInFocus.contains(friendEvents.last?.id ?? -1) && eventsInFocus.last != oldValue.last{
                    self.loadUserEventsPage()
                }

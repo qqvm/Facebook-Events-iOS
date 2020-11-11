@@ -30,8 +30,8 @@ struct FriendsBasicView: View {
         didSet{
             //self.appState.logger.log("LOADED", friendsInFocus.count, friendsInFocus.last, friends.count, friends.last?.id)
             if !isSubview && self.appState.loadComplete && self.appState.settings.token != "" && self.friendPager.canProceed &&
-                self.appState.isInternetAvailable && friendsInFocus.count > 0 &&
-                friendsInFocus.count <= (friends.count > 10 ? 10 : friends.count) &&
+                self.appState.isInternetAvailable /*&& friendsInFocus.count > 0 &&
+                friendsInFocus.count <= (friends.count > 10 ? 10 : friends.count)*/ &&
             friendsInFocus.contains(friends.last?.id ?? -1) && friendsInFocus.last != oldValue.last{
                 self.loadMyFriendsPage()
             }
@@ -54,8 +54,8 @@ struct FriendsBasicView: View {
                     .padding(.horizontal)
                     .padding(.top)
                 }
-                ScrollView{
-                    ForEach(friends, id: \.id){(friend: User) in
+                VStack{
+                    List(friends, id: \.id){(friend: User) in
                         NavigationLink(destination: UserEventsView(isSubview: self.isSubview, originId: self.originId, user: friend)){
                                 UserPlateView(friend: friend)
                             .onAppear(){

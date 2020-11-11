@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/groue/GRDB.swift.git",
         "state": {
           "branch": null,
-          "revision": "1ea4a44bb8d5b868a6cbea31974a42bd1fde6a35",
-          "version": "5.0.0"
+          "revision": "2c51c047081da160698e818d6844af75f321f867",
+          "version": "5.1.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
         "state": {
           "branch": null,
-          "revision": "7a21432a370a34925046244462281bd36ebab73d",
-          "version": "5.9.1"
+          "revision": "88b3ba211c0d604e60eab204c1baf8229c513399",
+          "version": "5.9.4"
         }
       },
       {

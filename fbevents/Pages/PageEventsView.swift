@@ -20,8 +20,8 @@ struct PageEventsView: View {
            didSet{
                //self.appState.logger.log("LOADED", eventsInFocus.count, eventsInFocus.last, pageEvents.count, pageEvents.last?.id)
                if self.appState.loadComplete && self.appState.settings.token != "" && (self.upcomingEventPager.canProceed || self.recurringEventPager.canProceed) &&
-                self.appState.isInternetAvailable && self.appState.loadComplete && eventsInFocus.count > 0 &&
-                   eventsInFocus.count <= (pageEvents.count > 7 ? 7 : pageEvents.count) &&
+                self.appState.isInternetAvailable && self.appState.loadComplete && eventsInFocus.count > 0 /*&&
+                   eventsInFocus.count <= (pageEvents.count > 7 ? 7 : pageEvents.count) */&&
                 eventsInFocus.last == pageEvents.last?.id && eventsInFocus.last != oldValue.last{
                     self.loadPageUpcomingEventsPage()
                     self.loadPageRecurringEventsPage()
