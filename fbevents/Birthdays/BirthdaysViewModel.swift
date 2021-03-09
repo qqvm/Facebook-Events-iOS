@@ -23,26 +23,26 @@ extension BirthdaysTabView{
     }
     
     func loadBirthdayFriends(){
-        // Pager is not needed here, because Facebook says we cannot access more monthes but we can.
-        let requestVars = Networking.BirthdayFriendsVariables(offsetMonth: self.currentMonth)
-        
+
+        let requestVars = self.pager.endCursor == "0" ? Networking.BirthdayFriendsVariables(scale: 2) : Networking.BirthdayFriendsVariables(count: self.monthToLoad, cursor: self.pager.endCursor)
+        print(self.pager.endCursor, self.pager.hasNext)
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         if let requestVarsJson = try? encoder.encode(requestVars) {
             if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8) {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: "3198768853546898"),
+                    URLQueryItem(name: "doc_id", value: self.pager.endCursor == "0" ? "3706366812763626" : "3681233908586032"), // backup doc_id 3198768853546898
                     URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: "BirthdayCometRootQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: self.pager.endCursor == "0" ? "BirthdayCometRootQuery" : "BirthdayCometMonthlyBirthdaysRefetchQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
                 appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.BirthdayFriendsResponse) in
-                    let slices = [(0, response.data?.today), (1, response.data?.recent), (2, response.data?.upcoming)]
+                    let slices = [(0, response.data?.today?.allFriends), (1, response.data?.recent?.allFriends), (2, response.data?.upcoming?.allFriends), (3, response.data?.viewer.allFriends)]
                     for (i, slice) in slices{
-                        if let edges = slice?.allFriends.edges{
+                        if let edges = slice?.edges{
                             for edge in edges{
                                 if let node = edge.node{
                                     let friend = User(
@@ -71,6 +71,10 @@ extension BirthdaysTabView{
                                         if !self.upcoming.contains(friend){
                                             self.upcoming.append(friend)
                                         }
+                                        case 3:
+                                        if !self.recent.contains(friend){
+                                            self.recent.append(friend)
+                                        }
                                         default:
                                             break
                                         }
@@ -81,6 +85,10 @@ extension BirthdaysTabView{
                     }
                     if let edges = response.data?.viewer.allFriendsByBirthdayMonth.edges{
                         for edge in edges{
+                            DispatchQueue.main.async {
+                                print("\(self.monthOffset): \(edge.node.monthNameInIso8601)")
+                                self.loadedMonths.append(edge.node.monthNameInIso8601)
+                            }
                             for friendEdge in edge.node.friends.edges{
                                 if let node = friendEdge.node{
                                     var friend = User(
@@ -107,10 +115,13 @@ extension BirthdaysTabView{
                             }
                         }
                     }
-                    DispatchQueue.main.async {
-                        self.loadedMonths.append(contentsOf: [self.currentMonth,
-                          self.currentMonth + 1 > 12 ? self.currentMonth + 1 - 12 : self.currentMonth + 1,
-                          self.currentMonth + 2 > 12 ? self.currentMonth + 2 - 12 : self.currentMonth + 2])
+                    if let info = response.data?.viewer.allFriendsByBirthdayMonth.pageInfo{
+                        DispatchQueue.main.async {
+                            self.pager.endCursor = info.endCursor ?? ""
+                            self.pager.startCursor = info.startCursor ?? ""
+                            self.pager.hasNext = info.hasNextPage
+                            self.pager.hasPrevious = info.hasPreviousPage ?? false
+                        }
                     }
                 }
             }

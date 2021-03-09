@@ -126,5 +126,84 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5F4C59F7-F2E1-4D98-A568-891F65CAEE46"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fbevents/Networking/Networking+Manager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "postURL(urlComponents:withToken:noCaching:logNetworkActivity:statusHadnler:dataPreprocessHadnler:errorHandler:responseHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "69BCE29D-20BC-41F4-8C91-1DD113626E42"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fbevents/Networking/Networking+Manager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "postURL(urlComponents:withToken:noCaching:logNetworkActivity:statusHadnler:dataPreprocessHadnler:errorHandler:responseHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "69BCE29D-20BC-41F4-8C91-1DD113626E42 - 52e267cd6b414fd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FBEvents.Networking.Manager.postURL&lt;A where A: FBEvents.ResponseData, A: Swift.Decodable&gt;(urlComponents: Foundation.URLComponents, withToken: Swift.Bool, noCaching: Swift.Bool, logNetworkActivity: Swift.Bool, statusHadnler: Swift.Optional&lt;(Swift.Int) -&gt; Swift.Bool&gt;, dataPreprocessHadnler: Swift.Optional&lt;(Foundation.Data) -&gt; Foundation.Data&gt;, errorHandler: Swift.Optional&lt;(Swift.Array&lt;Swift.String&gt;) -&gt; ()&gt;, responseHandler: (A) -&gt; ()) -&gt; ()"
+                  moduleName = "FBEvents"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/XProj/Facebook-Events-iOS/fbevents/Networking/Networking+Manager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "4150">
+               </Location>
+               <Location
+                  uuid = "69BCE29D-20BC-41F4-8C91-1DD113626E42 - 52e267cd6b414fd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FBEvents.Networking.Manager.postURL&lt;A where A: FBEvents.ResponseData, A: Swift.Decodable&gt;(urlComponents: Foundation.URLComponents, withToken: Swift.Bool, noCaching: Swift.Bool, logNetworkActivity: Swift.Bool, statusHadnler: Swift.Optional&lt;(Swift.Int) -&gt; Swift.Bool&gt;, dataPreprocessHadnler: Swift.Optional&lt;(Foundation.Data) -&gt; Foundation.Data&gt;, errorHandler: Swift.Optional&lt;(Swift.Array&lt;Swift.String&gt;) -&gt; ()&gt;, responseHandler: (A) -&gt; ()) -&gt; ()"
+                  moduleName = "FBEvents"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/XProj/Facebook-Events-iOS/fbevents/Networking/Networking+Manager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "6675">
+               </Location>
+               <Location
+                  uuid = "69BCE29D-20BC-41F4-8C91-1DD113626E42 - 3402ad8730cd461c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;__C.NSHTTPURLResponse&gt;, Swift.Optional&lt;Foundation.Data&gt;) -&gt; () in FBEvents.Networking.Manager.postURL&lt;A where A: FBEvents.ResponseData, A: Swift.Decodable&gt;(urlComponents: Foundation.URLComponents, withToken: Swift.Bool, noCaching: Swift.Bool, logNetworkActivity: Swift.Bool, statusHadnler: Swift.Optional&lt;(Swift.Int) -&gt; Swift.Bool&gt;, dataPreprocessHadnler: Swift.Optional&lt;(Foundation.Data) -&gt; Foundation.Data&gt;, errorHandler: Swift.Optional&lt;(Swift.Array&lt;Swift.String&gt;) -&gt; ()&gt;, responseHandler: (A) -&gt; ()) -&gt; ()"
+                  moduleName = "FBEvents"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/XProj/Facebook-Events-iOS/fbevents/Networking/Networking+Manager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "1068">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

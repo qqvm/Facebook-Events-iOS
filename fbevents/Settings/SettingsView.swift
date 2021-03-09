@@ -68,7 +68,7 @@ struct SettingsView: View {
                         Toggle("Delete cache on exit", isOn: self.$appState.settings.deleteCacheOnExit)
                         Toggle("Search pages instead of places", isOn: self.$appState.settings.usePagesSearchInsteadOfPlaces)
                         HStack{
-                            Text("Reload event's data after")
+                            Text("Reload event data after")
                                 .fixedSize()
                             TextField("", value: self.$appState.settings.reloadIntervalHours, formatter: NumberFormatter()){
                                 if self.appState.settings.reloadIntervalHours > 24{

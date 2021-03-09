@@ -44,7 +44,7 @@ extension Networking {
                 }
                 struct PageInfo: Codable{
                     var startCursor: String?
-                    var endCursor: String? // endCursor is the last loaded month.
+                    var endCursor: String?
                     var hasNextPage: Bool
                     var hasPreviousPage: Bool?
                 }
@@ -52,14 +52,15 @@ extension Networking {
                 var pageInfo: PageInfo?
             }
             var allFriendsByBirthdayMonth: ByMonth
+            var allFriends: Friends?
         }
         struct Data: Codable {
             struct FriendsEntity: Codable {
                 var allFriends: Friends
             }
-            var today: FriendsEntity
-            var recent: FriendsEntity
-            var upcoming: FriendsEntity
+            var today: FriendsEntity?
+            var recent: FriendsEntity?
+            var upcoming: FriendsEntity?
             var viewer: ViewerEntity
         }
         var data: Data?

@@ -16,7 +16,7 @@ struct FilterTabView: View {
     var body: some View {
         TabView(selection: $filterOptions.selectedTab){
             BaseFilterNavView(showFilter: self.$showFilter, filterOptions: self.$filterOptions){
-                ScrollView{
+                VStack{
                     HStack{
                         TextField("Keyword or ID", text: self.$filterOptions.searchKeyword){
                             self.showFilter = false
@@ -28,7 +28,7 @@ struct FilterTabView: View {
                         })
                             .padding(.trailing)
                     }.padding(.top)
-                    Group{
+                    VStack{
                         Text("Sort")
                             .frame(maxWidth: .infinity, alignment: .center)
                         Picker("", selection: self.$filterOptions.sortOrder) {
@@ -41,17 +41,14 @@ struct FilterTabView: View {
                         .padding(.horizontal)
                         
                         HStack{
-                            Spacer()
-                            Text("When").fixedSize()
-                            Spacer()
-                            Picker(selection: self.$filterOptions.timeFrame, label: HStack{Spacer();Text("When").fixedSize();Spacer()}) {
+                            Text("When")
+                                .offset(x: 5, y: 0)
+                            Picker("", selection: self.$filterOptions.timeFrame) {
                                 ForEach(FacebookSettings.timeFrameOptions, id: \.self) { el in
                                     Text(el)
                                 }
-                                }.labelsHidden()
-                            .lineLimit(3)
-                            .padding(.horizontal)
-                            Spacer()
+                            }
+                            .frame(height: 170)
                         }
                         Text("Time of the day")
                             .frame(maxWidth: .infinity, alignment: .center)

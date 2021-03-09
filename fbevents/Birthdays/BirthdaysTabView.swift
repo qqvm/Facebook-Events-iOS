@@ -12,23 +12,28 @@ import SwiftUI
 struct BirthdaysTabView: View {
     @EnvironmentObject var appState: AppState
     @State var selectedTab = 0
-    @State var currentMonth = Date().month{
+    @State var currentMonth = Date().month
+    @State var monthToLoad = 3
+    @State var pager = NetworkPager()
+    @State var maxMonthOffset = 12 - Date().month
+    @State var minMonthOffset = 1 - Date().month
+    @State var monthOffset = 0 {
         didSet{
-            self.currentMonthName = "0001-\(self.currentMonth)-01 00:00".toDate()?.monthName(.default) ?? ""
-            if self.currentMonth == 13{
-                self.currentMonth = 1
+            if self.monthOffset > maxMonthOffset{
+                self.monthOffset = maxMonthOffset
             }
-            else if self.currentMonth == 0{
-                self.currentMonth = 12
+            else if self.monthOffset < minMonthOffset{
+                self.monthOffset = maxMonthOffset
             }
-            if !loadedMonths.contains(currentMonth){
+            self.offsetMonthName = "0001-\(self.currentMonth + self.monthOffset)-01 00:00".toDate()?.monthName(.default) ?? ""
+            if !loadedMonths.contains(offsetMonthName) && self.pager.hasNext{
                 self.loadBirthdayFriends()
             }
         }
     }
-    @State var currentMonthName = ""
+    @State var offsetMonthName = ""
     @State private var offlineMode = false
-    @State var loadedMonths = [Int]()
+    @State var loadedMonths = [String]()
     @State var today = [User]()
     @State var recent = [User]()
     @State var upcoming = [User]()
@@ -76,19 +81,19 @@ struct BirthdaysTabView: View {
                 VStack{
                     if self.appState.isInternetAvailable{
                         HStack{
-                            Button(action: {self.currentMonth -= 1}){
+                            Button(action: {self.monthOffset -= 1}){
                                 Image(systemName: "arrow.left")
                                     .font(.title)
                             }
                             Spacer()
-                            Text(self.currentMonthName)
+                            Text(self.offsetMonthName)
                             Spacer()
-                            Button(action: {self.currentMonth += 1}){
+                            Button(action: {self.monthOffset += 1}){
                                 Image(systemName: "arrow.right")
                                     .font(.title)
                             }
                         }.onAppear(){
-                            self.currentMonthName = "0001-\(self.currentMonth)-01 00:00".toDate()?.monthName(.default) ?? ""
+                            self.offsetMonthName = "0001-\(self.currentMonth + self.monthOffset)-01 00:00".toDate()?.monthName(.default) ?? ""
                             if self.offlineMode{
                                 self.offlineMode = false
                                 self.loadBirthdayFriends()
@@ -96,7 +101,7 @@ struct BirthdaysTabView: View {
                         }
                             .padding(.horizontal)
                             .padding(.top)
-                        List(self.all.filter({$0.birthMonth ?? 0 == self.currentMonth}), id: \.self){friend in
+                        List(self.all.filter({$0.birthMonth ?? 0 == self.currentMonth + self.monthOffset}), id: \.self){friend in
                             BirthdayPlateView(friend: friend)
                         }.listStyle(PlainListStyle())
                     }
@@ -114,7 +119,9 @@ struct BirthdaysTabView: View {
             .tag(3)
         }.onAppear(){
             if self.all.count == 0{
-                if self.all.count == 0 && self.appState.isInternetAvailable{
+                if self.appState.isInternetAvailable{
+                    self.pager.endCursor = "0"
+                    print(self.currentMonth, self.maxMonthOffset, self.minMonthOffset)
                     self.loadBirthdayFriends()
                 }
                 else{

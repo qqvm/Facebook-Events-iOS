@@ -11,7 +11,9 @@ import Foundation
 
 extension Networking {
     struct BirthdayFriendsVariables: Codable{
-        var offsetMonth: Int
-        var scale: Int = 2
+        var scale: Int?
+        var offsetMonth: Int = 0
+        var count: Int?
+        var cursor: String?
     }
 }
