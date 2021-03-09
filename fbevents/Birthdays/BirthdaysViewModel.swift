@@ -24,7 +24,7 @@ extension BirthdaysTabView{
     
     func loadBirthdayFriends(){
 
-        let requestVars = self.pager.endCursor == "0" ? Networking.BirthdayFriendsVariables(scale: 2) : Networking.BirthdayFriendsVariables(count: self.monthToLoad, cursor: self.pager.endCursor)
+        let requestVars = Networking.BirthdayFriendsVariables(scale: 2, offsetMonth: self.monthOffset, count: self.monthToLoad)
         print(self.pager.endCursor, self.pager.hasNext)
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -32,10 +32,10 @@ extension BirthdaysTabView{
             if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8) {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: self.pager.endCursor == "0" ? "3706366812763626" : "3681233908586032"), // backup doc_id 3198768853546898
+                    URLQueryItem(name: "doc_id", value: "3706366812763626"), // backup doc_id 3198768853546898
                     URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: self.pager.endCursor == "0" ? "BirthdayCometRootQuery" : "BirthdayCometMonthlyBirthdaysRefetchQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: "BirthdayCometRootQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
