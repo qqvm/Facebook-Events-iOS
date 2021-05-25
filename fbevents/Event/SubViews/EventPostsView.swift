@@ -21,28 +21,37 @@ struct EventPostsView: View {
     var body: some View {
         VStack{
             VStack{
-                List(showOnlyPinned ? posts.filter{$0.pinned} : posts, id: \.id){(post: Post) in
-                    NavigationLink(destination: PostCommentsView(postId: post.id, isFavorite: self.isEventFavorite)){
-                        VStack{
-                            HStack{
-                                if post.pinned{
-                                    Image(systemName: "pin")
+                List{
+                    if showOnlyPinned ? posts.filter{$0.pinned}.count == 0 : posts.count == 0{
+                        EmptySection()
+                    }
+                    else{
+                        Section{
+                            ForEach(showOnlyPinned ? posts.filter{$0.pinned} : posts, id: \.id){(post: Post) in
+                                NavigationLink(destination: PostCommentsView(postId: post.id, isFavorite: self.isEventFavorite)){
+                                    VStack{
+                                        HStack{
+                                            if post.pinned{
+                                                Image(systemName: "pin")
+                                            }
+                                            Text(post.actors.map{$0.name}.joined(separator: ", "))
+                                            .font(.headline)
+                                            .fontWeight(.thin)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        }.padding(.top)
+                                        HStack{
+                                            Text("\(AppState.getFormattedDate(post.time, isLong: true, withWeekday: false, withYear: true))")
+                                            .font(.footnote)
+                                            .foregroundColor(.gray)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        }
+                                        VStack{
+                                            TextView(text: post.text)
+                                                .frame(width: UIScreen.main.bounds.width - 40, height: self.appState.getAproxTextHeight(post.text), alignment: .leading)
+                                            .padding(.trailing)
+                                        }
+                                    }
                                 }
-                                Text(post.actors.map{$0.name}.joined(separator: ", "))
-                                .font(.headline)
-                                .fontWeight(.thin)
-                                .fixedSize(horizontal: false, vertical: true)
-                            }.padding(.top)
-                            HStack{
-                                Text("\(AppState.getFormattedDate(post.time, isLong: true, withWeekday: false, withYear: true))")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                                .fixedSize(horizontal: false, vertical: true)
-                            }
-                            VStack{
-                                TextView(text: post.text)
-                                    .frame(width: UIScreen.main.bounds.width - 40, height: self.appState.getAproxTextHeight(post.text), alignment: .leading)
-                                .padding(.trailing)
                             }
                         }
                     }

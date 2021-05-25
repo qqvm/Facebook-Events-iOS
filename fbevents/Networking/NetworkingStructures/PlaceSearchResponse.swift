@@ -47,9 +47,10 @@ extension Networking {
                                 }
                                 var place: Place
                             }
+                            var id: String
                             var title: String
                             var profilePictureUri: String
-                            var searchCtaModel: SearchCtaModel
+                            var searchCtaModel: SearchCtaModel?
                             var placesSnippetModel: PlacesSnippetModel?
                         }
                         var placeViewModel: PlaceViewModel?

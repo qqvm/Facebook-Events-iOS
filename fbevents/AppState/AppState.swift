@@ -146,6 +146,7 @@ final class AppState: ObservableObject{
         do {
             self.dbPool = try DatabasePool(path: settings.favoritesDbUrl.absoluteString)
             self.cacheDbPool = try DatabasePool(path: settings.eventCacheDbUrl.absoluteString)
+            self.logger.log(settings.favoritesDbUrl, settings.eventCacheDbUrl)
             if settings.deleteCacheOnExit{
                 deleteCache()
             }

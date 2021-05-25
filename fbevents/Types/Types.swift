@@ -21,7 +21,7 @@ enum ActorType: String, Codable{
     case user = "User"
 }
 
-struct Actor: BasicActorData, Codable, Equatable, Hashable, PersistableData{
+struct Actor: BasicActorData, Codable, Equatable, Hashable, Identifiable, PersistableData{
     var id: Int
     var type: ActorType
     var name: String
@@ -68,7 +68,7 @@ enum ParentType: String, Codable{
     case comment = "Comment"
 }
 
-struct Post: Codable, Equatable, Hashable, PersistableData{
+struct Post: Codable, Equatable, Hashable, Identifiable, PersistableData{
     var id: Int
     var parentId: Int // references to Event.id
     var parentType: String
@@ -93,7 +93,7 @@ struct Post: Codable, Equatable, Hashable, PersistableData{
     }
 }
 
-struct Comment: Codable, Equatable, Hashable, PersistableData{
+struct Comment: Codable, Equatable, Hashable, Identifiable, PersistableData{
     var id: Int
     var parentId: Int // references to Comment.id or Event.id
     var parentType: String

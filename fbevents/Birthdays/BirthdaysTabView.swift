@@ -13,14 +13,13 @@ struct BirthdaysTabView: View {
     @EnvironmentObject var appState: AppState
     @State var selectedTab = 0
     @State var currentMonth = Date().month
-    @State var monthToLoad = 3
     @State var pager = NetworkPager()
     @State var maxMonthOffset = 12 - Date().month
     @State var minMonthOffset = 1 - Date().month
     @State var monthOffset = 0 {
         didSet{
             if self.monthOffset > maxMonthOffset{
-                self.monthOffset = maxMonthOffset
+                self.monthOffset = minMonthOffset
             }
             else if self.monthOffset < minMonthOffset{
                 self.monthOffset = maxMonthOffset
@@ -43,8 +42,17 @@ struct BirthdaysTabView: View {
         TabView(selection: $selectedTab){
             BaseBirthdaysNavView{
                 VStack{
-                    List(self.today, id: \.self){friend in
-                        BirthdayPlateView(friend: friend)
+                    List{
+                        if self.today.count == 0{
+                            EmptySection()
+                        }
+                        else{
+                            Section{
+                                ForEach(self.today, id: \.self){friend in
+                                    BirthdayPlateView(friend: friend)
+                                }
+                            }
+                        }
                     }.listStyle(PlainListStyle())
                 }
             }
@@ -67,8 +75,17 @@ struct BirthdaysTabView: View {
             .tag(1)
             BaseBirthdaysNavView{
                 VStack{
-                    List(self.upcoming, id: \.self){friend in
-                        BirthdayPlateView(friend: friend)
+                    List{
+                        if self.upcoming.count == 0{
+                            EmptySection()
+                        }
+                        else{
+                            Section{
+                                ForEach(self.upcoming, id: \.self){friend in
+                                    BirthdayPlateView(friend: friend)
+                                }
+                            }
+                        }
                     }.listStyle(PlainListStyle())
                 }
             }
@@ -101,13 +118,31 @@ struct BirthdaysTabView: View {
                         }
                             .padding(.horizontal)
                             .padding(.top)
-                        List(self.all.filter({$0.birthMonth ?? 0 == self.currentMonth + self.monthOffset}), id: \.self){friend in
-                            BirthdayPlateView(friend: friend)
+                        List{
+                            if self.all.filter({$0.birthMonth ?? 0 == self.currentMonth + self.monthOffset}).count == 0{
+                                EmptySection()
+                            }
+                            else{
+                                Section{
+                                    ForEach(self.all.filter({$0.birthMonth ?? 0 == self.currentMonth + self.monthOffset}), id: \.self){friend in
+                                        BirthdayPlateView(friend: friend)
+                                    }
+                                }
+                            }
                         }.listStyle(PlainListStyle())
                     }
                     else{
-                        List(self.all, id: \.self){friend in
-                            BirthdayPlateView(friend: friend)
+                        List{
+                            if self.all.count == 0{
+                                EmptySection()
+                            }
+                            else{
+                                Section{
+                                    ForEach(self.all, id: \.self){friend in
+                                        BirthdayPlateView(friend: friend)
+                                    }
+                                }
+                            }
                         }.listStyle(PlainListStyle())
                     }
                 }

@@ -15,21 +15,30 @@ struct FavoritesBasicView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            List {
-                ForEach(events, id: \.id) { (event: Event) in
-                    NavigationLink(destination: EventView(eventId: event.id)) {
-                        EventPlateView(event: event)
-                    }.buttonStyle(PlainButtonStyle())
+            List{
+                if events.count == 0{
+                    EmptySection()
+                }
+                else{
+                    Section{
+                        ForEach(events, id: \.id) { (event: Event) in
+                            NavigationLink(destination: EventView(eventId: event.id)) {
+                                EventPlateView(event: event)
+                            }.buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NeedRefreshFromDB"))) {
+                        if $0.object is Int {
+                            self.refreshEventsFromDb()
+                        }
+                    }
                 }
             }.listStyle(DefaultListStyle())
-            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NeedRefreshFromDB"))) {
-                if $0.object is Int {
-                    self.refreshEventsFromDb()
-                }
-            }
         }
         .onAppear(){
-            self.refreshEventsFromDb()
+            if self.events.count == 0{
+                self.refreshEventsFromDb()
+            }
         }
         .navigationBarTitle(Text(self.appState.selectedView == .events ? "Offline search" : "Favorites"), displayMode: .inline)
         .navigationBarItems(leading:

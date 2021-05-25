@@ -11,7 +11,7 @@ import SwiftDate
 import GRDB
 
 
-struct SimpleChildEvent: Codable, Equatable, Hashable{
+struct SimpleChildEvent: Codable, Equatable, Hashable, Identifiable{
     var id: Int
     var startTimestamp: Int
     var endTimestamp: Int
@@ -32,7 +32,7 @@ protocol BasicEventData{
     var dayTimeSentence: String{get set}
 }
 
-struct SimpleEvent: BasicEventData, Equatable, Hashable{
+struct SimpleEvent: BasicEventData, Equatable, Hashable, Identifiable{
     var id: Int
     var name: String
     var coverPhoto: String
@@ -47,7 +47,7 @@ struct SimpleEvent: BasicEventData, Equatable, Hashable{
     }
 }
 
-struct Event: Codable, Equatable, Hashable, PersistableData, BasicEventData {
+struct Event: Codable, Equatable, Hashable, Identifiable, PersistableData, BasicEventData {
     var id: Int
     var name: String
     var coverPhoto: String

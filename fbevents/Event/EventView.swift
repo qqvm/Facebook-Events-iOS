@@ -179,7 +179,7 @@ struct EventView: View {
                                 ForEach(self.event!.hosts, id: \.id){(host: Actor) in
                                     Group{
                                         if host.type == .page{
-                                            NavigationLink(destination: PageEventsView(isSubview: true, originId: self.originId, pageId: host.id)){
+                                            NavigationLink(destination: PageEventsView(isSubview: true, originId: self.originId, page: Page(id: host.id, name: host.name, picture: host.picture))){
                                                 Text(host.name).fixedSize(horizontal: false, vertical: true)
                                             }
                                         }

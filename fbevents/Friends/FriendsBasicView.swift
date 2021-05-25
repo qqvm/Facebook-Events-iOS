@@ -55,27 +55,36 @@ struct FriendsBasicView: View {
                     .padding(.top)
                 }
                 VStack{
-                    List(friends, id: \.id){(friend: User) in
-                        NavigationLink(destination: UserEventsView(isSubview: self.isSubview, originId: self.originId, user: friend)){
-                                UserPlateView(friend: friend)
-                            .onAppear(){
-                                if !self.isSubview && !self.isFavoriteTab{
-                                    DispatchQueue.main.async {
-                                        if !self.friendsInFocus.contains(friend.id){
-                                            self.friendsInFocus.append(friend.id)
+                    List{
+                        if friends.count == 0{
+                            EmptySection()
+                        }
+                        else{
+                            Section{
+                                ForEach(friends, id: \.id){(friend: User) in
+                                    NavigationLink(destination: UserEventsView(isSubview: self.isSubview, originId: self.originId, user: friend)){
+                                            UserPlateView(friend: friend)
+                                        .onAppear(){
+                                            if !self.isSubview && !self.isFavoriteTab{
+                                                DispatchQueue.main.async {
+                                                    if !self.friendsInFocus.contains(friend.id){
+                                                        self.friendsInFocus.append(friend.id)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        .onDisappear(){
+                                            if !self.isSubview && !self.isFavoriteTab{
+                                                DispatchQueue.main.async {
+                                                    self.friendsInFocus.removeAll(where: {$0 == friend.id})
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
-                            .onDisappear(){
-                                if !self.isSubview && !self.isFavoriteTab{
-                                    DispatchQueue.main.async {
-                                        self.friendsInFocus.removeAll(where: {$0 == friend.id})
-                                    }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }//.listStyle(PlainListStyle())
                 }.padding()
             }

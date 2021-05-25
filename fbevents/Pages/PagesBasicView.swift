@@ -42,7 +42,7 @@ struct PagesBasicView: View {
             VStack{
                 if showSearchField?.wrappedValue ?? false{
                     HStack{
-                        TextField("Search places", text: self.searchKeyword ?? Binding.constant("")){
+                        TextField(self.appState.settings.usePagesSearchInsteadOfPlaces ? "Search pages" : "Search places", text: self.searchKeyword ?? Binding.constant("")){
                             self.refreshPages()
                         }
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -54,28 +54,37 @@ struct PagesBasicView: View {
                     .padding(.top)
                 }
                 VStack{
-                    List(pages, id: \.id){(page: Page) in
-                        NavigationLink(destination: PageEventsView(isSubview: self.isSubview, pageId: page.id)){
-                            PagePlateView(page: page)
-                            .onAppear(){
-                                if self.appState.selectedView == .pages && !self.isFavoriteTab{
-                                    DispatchQueue.main.async {
-                                        if !self.pagesInFocus.contains(page.id){
-                                            self.pagesInFocus.append(page.id)
+                    List{
+                        if pages.count == 0{
+                            EmptySection()
+                        }
+                        else{
+                            Section{
+                                ForEach(pages, id: \.id){(page: Page) in
+                                    NavigationLink(destination: PageEventsView(isSubview: self.isSubview, page: page)){
+                                        PagePlateView(page: page)
+                                        .onAppear(){
+                                            if self.appState.selectedView == .pages && !self.isFavoriteTab{
+                                                DispatchQueue.main.async {
+                                                    if !self.pagesInFocus.contains(page.id){
+                                                        self.pagesInFocus.append(page.id)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        .onDisappear(){
+                                            if self.appState.selectedView == .pages && !self.isFavoriteTab{
+                                                DispatchQueue.main.async {
+                                                    self.pagesInFocus.removeAll(where: {$0 == page.id})
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
-                            .onDisappear(){
-                                if self.appState.selectedView == .pages && !self.isFavoriteTab{
-                                    DispatchQueue.main.async {
-                                        self.pagesInFocus.removeAll(where: {$0 == page.id})
-                                    }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
-                    }//.listStyle(PlainListStyle())
+                    }.listStyle(PlainListStyle())
                 }.padding()
             }
             .onAppear(){

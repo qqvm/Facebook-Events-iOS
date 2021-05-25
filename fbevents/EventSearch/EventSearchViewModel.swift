@@ -69,7 +69,7 @@ extension EventSearchView {
                                 startTimestamp: edge.node.startTimestamp,
                                 endTimestamp: edge.node.endTimestamp,
                                 dayTimeSentence: edge.node.dayTimeSentence,
-                                eventPlaceName: edge.node.eventPlace.name,
+                                eventPlaceName: edge.node.eventPlace?.name ?? "Unknown",
                                 eventPlaceAddress: edge.node.location?.reverseGeocode.address == nil || edge.node.location?.reverseGeocode.city == nil ? "" :
                                     (edge.node.location!.reverseGeocode.state == nil || edge.node.location!.reverseGeocode.state == "" ? "\(edge.node.location!.reverseGeocode.address), \(edge.node.location!.reverseGeocode.city)" : "\(edge.node.location!.reverseGeocode.address), \(edge.node.location!.reverseGeocode.city), \(edge.node.location!.reverseGeocode.state!)"),
                                 previewSocialContext: edge.node.previewSocialContext.textWithEntities.text,

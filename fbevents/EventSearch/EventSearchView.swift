@@ -34,20 +34,27 @@ struct EventSearchView: View {
     var body: some View {
         VStack{
             List{
-                ForEach(selectedTab > 0 ? nonSearchEvents : appState.searchEvents, id: \.id) { event in
-                    NavigationLink(destination: EventView(eventId: event.id)) {
-                        EventPlateView(event: event)
-                    }.buttonStyle(PlainButtonStyle())
-                    .onAppear(){
-                        DispatchQueue.main.async {
-                            if !self.inFocus.contains(event.id){
-                                self.inFocus.append(event.id)
+                if selectedTab > 0 ? nonSearchEvents.count == 0 : appState.searchEvents.count == 0{
+                    EmptySection()
+                }
+                else{
+                    Section{
+                        ForEach(selectedTab > 0 ? nonSearchEvents : appState.searchEvents, id: \.id) { event in
+                            NavigationLink(destination: EventView(eventId: event.id)) {
+                                EventPlateView(event: event)
+                            }.buttonStyle(PlainButtonStyle())
+                            .onAppear(){
+                                DispatchQueue.main.async {
+                                    if !self.inFocus.contains(event.id){
+                                        self.inFocus.append(event.id)
+                                    }
+                                }
                             }
-                        }
-                    }
-                    .onDisappear(){
-                        DispatchQueue.main.async {
-                            self.inFocus.removeAll(where: {$0 == event.id})
+                            .onDisappear(){
+                                DispatchQueue.main.async {
+                                    self.inFocus.removeAll(where: {$0 == event.id})
+                                }
+                            }
                         }
                     }
                 }

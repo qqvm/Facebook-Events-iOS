@@ -28,14 +28,14 @@ struct ContentModalsView: View {
                     let urlContainer = localUrl.split(separator: "/")
                     if urlContainer.count == 2{
                         let id = Int(urlContainer[1]) ?? 0
-                        if urlContainer[0] == "event"{
+                        if urlContainer[0].starts(with: "event") {
                             DispatchQueue.main.async {
                                 self.notificationId = id
                                 self.showEventSheet = true
                             }
                         }
-                        else if urlContainer[0] == "user"{}
-                        else if urlContainer[0] == "page"{}
+                        else if urlContainer[0].starts(with: "user"){}
+                        else if urlContainer[0].starts(with: "page"){}
                     }
                 }
             }

@@ -148,6 +148,10 @@ extension FriendsBasicView{
                                 picture: edge.node.image.uri,
                                 isFriend: true
                             )
+                            if friend.exists(dbPool: self.appState.dbPool!) && friend.picture != ""{
+                                _ = friend.updateInDB(dbPool: self.appState.dbPool!)
+                            }
+                            _ = friend.exists(dbPool: self.appState.cacheDbPool!) ? friend.updateInDB(dbPool: self.appState.cacheDbPool!) : friend.save(dbPool: self.appState.cacheDbPool!)
                             DispatchQueue.main.async {
                                 if !self.friends.contains(friend){
                                     self.friends.append(friend)

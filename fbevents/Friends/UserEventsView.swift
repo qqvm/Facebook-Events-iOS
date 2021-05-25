@@ -14,7 +14,7 @@ struct UserEventsView: View {
     @State var originId = 0
     @State var friendEvents = [BasicEventData]()
     @State var eventPager = NetworkPager()
-    @State var user: BasicActorData
+    @State var user: User
     @State var eventsInFocus = [Int](){
            didSet{
                //self.appState.logger.log("LOADED", eventsInFocus.count, eventsInFocus.last, friendEvents.count, friendEvents.last?.id)
@@ -26,30 +26,48 @@ struct UserEventsView: View {
                }
            }
        }
+    @State private var isFavorite = false{
+        willSet{
+            if !isFavorite && newValue{
+                _ = self.user.save(dbPool: self.appState.dbPool!)
+            }
+            else if isFavorite && !newValue{
+                _ = self.user.delete(dbPool: self.appState.dbPool!)
+            }
+        }
+    }
     
     var body: some View {
         VStack{
             List{
-                ForEach(friendEvents, id: \.id) { event in
-                    NavigationLink(destination: EventView(eventId: event.id)) {
-                        EventPlateView(event: event)
-                    }.disabled(event.id == self.originId)
-                    .buttonStyle(PlainButtonStyle())
-                    .onAppear(){
-                        DispatchQueue.main.async {
-                            if !self.eventsInFocus.contains(event.id){
-                                self.eventsInFocus.append(event.id)
+                if friendEvents.count == 0{
+                    EmptySection()
+                }
+                else{
+                    Section{
+                        ForEach(friendEvents, id: \.id) { event in
+                            NavigationLink(destination: EventView(eventId: event.id)) {
+                                EventPlateView(event: event)
+                            }.disabled(event.id == self.originId)
+                            .buttonStyle(PlainButtonStyle())
+                            .onAppear(){
+                                DispatchQueue.main.async {
+                                    if !self.eventsInFocus.contains(event.id){
+                                        self.eventsInFocus.append(event.id)
+                                    }
+                                }
                             }
-                        }
-                    }
-                    .onDisappear(){
-                        DispatchQueue.main.async {
-                            self.eventsInFocus.removeAll(where: {$0 == event.id})
+                            .onDisappear(){
+                                DispatchQueue.main.async {
+                                    self.eventsInFocus.removeAll(where: {$0 == event.id})
+                                }
+                            }
                         }
                     }
                 }
             }.listStyle(DefaultListStyle())
         }.onAppear(){
+            self.isFavorite = user.exists(dbPool: self.appState.dbPool!)
             if self.friendEvents.count == 0{
                 if self.appState.isInternetAvailable{
                     self.loadUserEventsPage()
@@ -60,6 +78,13 @@ struct UserEventsView: View {
                 }
             }
         }
-        .navigationBarTitle(Text((user as? User)?.isFriend ?? false ? (self.appState.isInternetAvailable ? "Friend's events" : "Friend's events (cached)") : "User's events"), displayMode: .inline)
+        .navigationBarTitle(Text(user.name), displayMode: .inline)
+        .navigationBarItems(trailing:
+            Button(action: {
+                self.isFavorite.toggle()
+                NotificationCenter.default.post(name: Notification.Name("NeedRefreshFromDB"), object: self.user.id) // to delete immediately from favorites screen.
+            }, label: {Image(systemName: isFavorite ? "star.fill" : "star")})
+            
+        )
     }
 }

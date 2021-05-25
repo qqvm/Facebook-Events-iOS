@@ -22,22 +22,21 @@ extension FavoritesBasicView{
     func loadEventsFromDb() {
         do {
             let loadedEvents = self.appState.selectedView == .events ? try appState.cacheDbPool!.read(Event.fetchAll) : try appState.dbPool!.read(Event.fetchAll) // chek to show offline cache
+
             for event in loadedEvents{
                 if (appState.settings.deleteExpired && event.expired) {
                     _ = event.delete(dbPool: self.appState.dbPool!)
                     continue
                 }
                 else{
-                    events.append(event)
+                    self.events.append(event)
                 }
             }
         }
         catch{
             self.appState.logger.log(error)
-            DispatchQueue.main.async {
-                self.appState.errorDescription = error.localizedDescription
-                self.appState.showError = true
-            }
+            self.appState.errorDescription = error.localizedDescription
+            self.appState.showError = true
         }
     }
     
@@ -79,12 +78,12 @@ extension FavoritesBasicView{
             }
     }
     
-    func getEventIndex(eventId: Int) -> Int {
+   /* func getEventIndex(eventId: Int) -> Int {
         if let index = self.events.firstIndex(where: {$0.id == eventId}){
             return index
         }
         else {
             return -1
         }
-    }
+    }*/
 }

@@ -23,8 +23,7 @@ extension BirthdaysTabView{
     }
     
     func loadBirthdayFriends(){
-
-        let requestVars = Networking.BirthdayFriendsVariables(scale: 2, offsetMonth: self.monthOffset, count: self.monthToLoad)
+        let requestVars = Networking.BirthdayFriendsVariables(scale: 3, offsetMonth: monthOffset)
         print(self.pager.endCursor, self.pager.hasNext)
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -32,14 +31,14 @@ extension BirthdaysTabView{
             if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8) {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: "3706366812763626"), // backup doc_id 3198768853546898
+                    URLQueryItem(name: "doc_id", value: "4323851600999289"), // backup doc_id 3198768853546898 3706366812763626
                     URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: "BirthdayCometRootQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: "BirthdayCometMonthlyBirthdaysRefetchQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
-                appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.BirthdayFriendsResponse) in
+                appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: true){(response: Networking.BirthdayFriendsResponse) in
                     let slices = [(0, response.data?.today?.allFriends), (1, response.data?.recent?.allFriends), (2, response.data?.upcoming?.allFriends), (3, response.data?.viewer.allFriends)]
                     for (i, slice) in slices{
                         if let edges = slice?.edges{
@@ -86,7 +85,6 @@ extension BirthdaysTabView{
                     if let edges = response.data?.viewer.allFriendsByBirthdayMonth.edges{
                         for edge in edges{
                             DispatchQueue.main.async {
-                                print("\(self.monthOffset): \(edge.node.monthNameInIso8601)")
                                 self.loadedMonths.append(edge.node.monthNameInIso8601)
                             }
                             for friendEdge in edge.node.friends.edges{
@@ -106,6 +104,7 @@ extension BirthdaysTabView{
                                     if friend.exists(dbPool: self.appState.dbPool!){
                                         _ = friend.save(dbPool: self.appState.dbPool!)
                                     }
+                                    _ = friend.exists(dbPool: self.appState.cacheDbPool!) ? friend.updateInDB(dbPool: self.appState.cacheDbPool!) : friend.save(dbPool: self.appState.cacheDbPool!)
                                     DispatchQueue.main.async {
                                         if !self.all.contains(friend){
                                             self.all.append(friend)

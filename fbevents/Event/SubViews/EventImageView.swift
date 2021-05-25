@@ -27,7 +27,7 @@ struct EventImageView: View {
                     .placeholder(){
                         Image(systemName: "photo")
                         .resizable()
-                        .frame(width: 70, height: 70, alignment: .center)
+                        .scaledToFit()
                     }
                     .resizable()
                     .scaledToFit()
@@ -36,8 +36,8 @@ struct EventImageView: View {
             else{
                 Image(systemName: "photo")
                 .resizable()
-                .frame(width: 70, height: 70, alignment: .center)
-                    .padding(.bottom)
+                .scaledToFit()
+                .padding(.bottom)
             }
         }
     }

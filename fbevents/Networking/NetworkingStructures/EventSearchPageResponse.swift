@@ -21,7 +21,7 @@ extension Networking {
             var startTimestamp: Int
             var endTimestamp: Int
             var dayTimeSentence: String
-            var eventPlace: EventPlace
+            var eventPlace: EventPlace?
             var previewSocialContext: SocialContext
             var eventDescription: Text
             var location: LocationInfo?

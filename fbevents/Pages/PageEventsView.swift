@@ -12,7 +12,7 @@ struct PageEventsView: View {
     @EnvironmentObject var appState: AppState
     @State var isSubview = false
     @State var originId = 0
-    @State var pageId: Int
+    @State var page: Page
     @State var pageEvents = [BasicEventData]()
     @State var upcomingEventPager = NetworkPager()
     @State var recurringEventPager = NetworkPager()
@@ -28,6 +28,16 @@ struct PageEventsView: View {
                }
            }
        }
+    @State private var isFavorite = false{
+        willSet{
+            if !isFavorite && newValue{
+                _ = self.page.save(dbPool: self.appState.dbPool!)
+            }
+            else if isFavorite && !newValue{
+                _ = self.page.delete(dbPool: self.appState.dbPool!)
+            }
+        }
+    }
     
     var body: some View {
         VStack{
@@ -62,6 +72,7 @@ struct PageEventsView: View {
                 }.listStyle(PlainListStyle())
             }
         }.onAppear(){
+            self.isFavorite = page.exists(dbPool: self.appState.dbPool!)
             if self.pageEvents.count == 0{
                 if self.appState.isInternetAvailable{
                     self.loadPageUpcomingEventsPage()
@@ -74,6 +85,13 @@ struct PageEventsView: View {
                 }
             }
         }
-        .navigationBarTitle(Text(self.appState.isInternetAvailable ? "Page's events" : "Page's events (cached)"), displayMode: .inline)
+        .navigationBarTitle(Text(page.name), displayMode: .inline)
+        .navigationBarItems(trailing:
+            Button(action: {
+                self.isFavorite.toggle()
+                NotificationCenter.default.post(name: Notification.Name("NeedRefreshFromDB"), object: self.page.id) // to delete immediately from favorites screen.
+            }, label: {Image(systemName: isFavorite ? "star.fill" : "star")})
+            
+        )
     }
 }

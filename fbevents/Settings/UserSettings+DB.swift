@@ -31,7 +31,6 @@ extension UserSettings {
             do{
                 var dbPool: DatabasePool? = dbName.contains("Cache") ? try DatabasePool(path: eventCacheDbUrl.absoluteString)
                     : try DatabasePool(path: favoritesDbUrl.absoluteString)
-                logger.log("\(dbName): \(dbPool!.path)")
                 try dbPool!.write{db in
                     // To make changes in DB structure without increasing build number place them here.
                 }

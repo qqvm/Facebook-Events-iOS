@@ -57,18 +57,26 @@ extension PagesBasicView{
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         if let requestVarsJson = try? encoder.encode(requestVars) {
-            if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8)?.replacingOccurrences(of: "feedback_source", with: "feedbackSource").replacingOccurrences(of: "is_comet", with: "isComet").replacingOccurrences(of: "privacy_selector_render_location", with: "privacySelectorRenderLocation") {
+            if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8)?.replacingOccurrences(of: "feedback_source", with: "feedbackSource")
+                .replacingOccurrences(of: "privacy_selector_render_location", with: "privacySelectorRenderLocation")
+                .replacingOccurrences(of: "feed_location", with: "feedLocation")
+                .replacingOccurrences(of: "display_comments_feedback_context", with: "displayCommentsFeedbackContext")
+                .replacingOccurrences(of: "display_comments_context_is_story_set", with: "displayCommentsContextIsStorySet")
+                .replacingOccurrences(of: "display_comments_context_is_aggregated_share", with: "displayCommentsContextIsAggregatedShare")
+                .replacingOccurrences(of: "display_comments_context_is_ad_preview", with: "displayCommentsContextIsAdPreview")
+                .replacingOccurrences(of: "display_comments_context_enable_comment", with: "displayCommentsContextEnableComment")
+            {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: "3286575051390489"),
-                    // backup doc_id 3889488077747354
-                    URLQueryItem(name: "locale", value: appState.settings.locale),
+                    URLQueryItem(name: "doc_id", value: "4045482902213135"),
+                    // backup doc_id 3994449497337419, 3889488077747354, 3286575051390489
+                    //URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: "CometSearchResultsInitialResultsQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: "SearchCometResultsPaginatedResultsQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
-                appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.PageSearchResponse) in
+                appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: false){(response: Networking.PageSearchResponse) in
                     if let edges = response.data?.serpResponse?.results.edges{
                         for edge in edges{
                             let page = Page(
@@ -79,6 +87,7 @@ extension PagesBasicView{
                             if page.exists(dbPool: self.appState.dbPool!) && page.picture != ""{
                                 _ = page.updateInDB(dbPool: self.appState.dbPool!)
                             }
+                            _ = page.exists(dbPool: self.appState.cacheDbPool!) ? page.updateInDB(dbPool: self.appState.cacheDbPool!) : page.save(dbPool: self.appState.cacheDbPool!)
                             DispatchQueue.main.async {
                                 if page.id > 0 && !self.pages.contains(where: {$0.id == page.id}){
                                     self.pages.append(page)
@@ -107,34 +116,43 @@ extension PagesBasicView{
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         if let requestVarsJson = try? encoder.encode(requestVars) {
-            if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8)?.replacingOccurrences(of: "feedback_source", with: "feedbackSource") {
+            if let requestVarsFinal = String(data: requestVarsJson, encoding: .utf8)?.replacingOccurrences(of: "feedback_source", with: "feedbackSource")
+                .replacingOccurrences(of: "privacy_selector_render_location", with: "privacySelectorRenderLocation")
+                .replacingOccurrences(of: "feed_location", with: "feedLocation")
+                .replacingOccurrences(of: "display_comments_feedback_context", with: "displayCommentsFeedbackContext")
+                .replacingOccurrences(of: "display_comments_context_is_story_set", with: "displayCommentsContextIsStorySet")
+                .replacingOccurrences(of: "display_comments_context_is_aggregated_share", with: "displayCommentsContextIsAggregatedShare")
+                .replacingOccurrences(of: "display_comments_context_is_ad_preview", with: "displayCommentsContextIsAdPreview")
+                .replacingOccurrences(of: "display_comments_context_enable_comment", with: "displayCommentsContextEnableComment")
+            {
                 var components = URLComponents(url: URL(string: "https://graph.facebook.com/graphql")!, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    URLQueryItem(name: "doc_id", value: "3549057475175351"),
-                    // backup doc_id 3350139948377577, 3233710406666581
-                    URLQueryItem(name: "locale", value: appState.settings.locale),
+                    URLQueryItem(name: "doc_id", value: "4045482902213135"),
+                    // backup doc_id 3233710406666581, 3549057475175351, 3350139948377577
+//                    URLQueryItem(name: "locale", value: appState.settings.locale),
                     URLQueryItem(name: "variables", value: requestVarsFinal),
-                    URLQueryItem(name: "fb_api_req_friendly_name", value: "SearchCometResultsInitialResultsQuery"),
+                    URLQueryItem(name: "fb_api_req_friendly_name", value: "SearchCometResultsPaginatedResultsQuery"),
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
-                appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.PlaceSearchResponse) in
+                appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: false){(response: Networking.PlaceSearchResponse) in
                     if let edges = response.data?.serpResponse?.results.edges{
                         for edge in edges{
                             let page = Page(
-                                id: Int(edge.relayRenderingStrategy.viewModel.placeViewModel?.searchCtaModel.place.id ?? "0")!,
+                                id: Int(edge.relayRenderingStrategy.viewModel.placeViewModel?.id.split(separator: "-")[1] ?? "0")!,
                                 name: edge.relayRenderingStrategy.viewModel.placeViewModel?.title ?? "No Title",
                                 picture: edge.relayRenderingStrategy.viewModel.placeViewModel?.profilePictureUri ?? "",
                                 address: edge.relayRenderingStrategy.viewModel.placeViewModel?.placesSnippetModel?.location?.address
                             )
+                            if page.id == 0{continue}
                             if page.exists(dbPool: self.appState.dbPool!) && page.picture != ""{
                                 _ = page.updateInDB(dbPool: self.appState.dbPool!)
                             }
+                            _ = page.exists(dbPool: self.appState.cacheDbPool!) ? page.updateInDB(dbPool: self.appState.cacheDbPool!) : page.save(dbPool: self.appState.cacheDbPool!)
                             DispatchQueue.main.async {
                                 if page.id > 0 && !self.pages.contains(where: {$0.id == page.id}){
                                     self.pages.append(page)
                                 }
-                                
                             }
                         }
                         if let info = response.data?.serpResponse?.results.pageInfo{
@@ -157,7 +175,7 @@ extension PageEventsView{
         do{
             self.pageEvents.removeAll()
             let events = try self.appState.cacheDbPool!.read(Event.fetchAll)
-            self.pageEvents.append(contentsOf: events.filter({($0.hosts.map{$0.id == self.pageId}).contains(true)}))
+            self.pageEvents.append(contentsOf: events.filter({($0.hosts.map{$0.id == self.page.id}).contains(true)}))
         }
         catch{
             self.appState.logger.log(error)
@@ -166,7 +184,7 @@ extension PageEventsView{
     
     func loadPageUpcomingEventsPage(completion: (()->())? = nil){
         if !self.upcomingEventPager.canProceed {return}
-        let requestVars = Networking.PageEventsVariables(pageID: String(self.pageId), cursor: self.upcomingEventPager.endCursor)
+        let requestVars = Networking.PageEventsVariables(pageID: String(self.page.id), cursor: self.upcomingEventPager.endCursor)
         //self.appState.logger.log("upcoming cursor:", self.upcomingEventPager.endCursor)
         let encoder = JSONEncoder()
         if let requestVarsJson = try? encoder.encode(requestVars) {
@@ -211,7 +229,7 @@ extension PageEventsView{
     
     func loadPageRecurringEventsPage(completion: (()->())? = nil){
         if !self.recurringEventPager.canProceed {return}
-        let requestVars = Networking.PageEventsVariables(pageID: String(self.pageId), cursor: self.recurringEventPager.endCursor)
+        let requestVars = Networking.PageEventsVariables(pageID: String(self.page.id), cursor: self.recurringEventPager.endCursor)
         //self.appState.logger.log("recurring cursor:", self.recurringEventPager.endCursor)
         let encoder = JSONEncoder()
         if let requestVarsJson = try? encoder.encode(requestVars) {

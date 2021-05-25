@@ -21,7 +21,7 @@ struct UserPlateView: View {
                     .placeholder(Image(systemName: "photo"))
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 70, height: 70, alignment: .leading)
+                    .frame(width: 100, height: 70, alignment: .leading)
                     .padding(.trailing)
             }
             Text(friend.name)

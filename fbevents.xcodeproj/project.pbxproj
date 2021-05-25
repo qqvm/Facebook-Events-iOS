@@ -112,6 +112,7 @@
 		CEC24E8224AF0FBA00094536 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC24E8124AF0FBA00094536 /* LoginView.swift */; };
 		CEC24E8424AF0FC400094536 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC24E8324AF0FC400094536 /* LoginViewModel.swift */; };
 		CEC24E8624AF181500094536 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC24E8524AF181500094536 /* KeychainWrapper.swift */; };
+		CEC55FB8265D2F21009D4711 /* EmptySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC55FB7265D2F21009D4711 /* EmptySection.swift */; };
 		CECB49EC24D962B100C1F672 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49EB24D962B100C1F672 /* GRDB */; };
 		CECB49EF24D962DD00C1F672 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49EE24D962DD00C1F672 /* SwiftDate */; };
 		CECB49F224D9630E00C1F672 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49F124D9630E00C1F672 /* SDWebImageSwiftUI */; };
@@ -235,6 +236,7 @@
 		CEC24E8124AF0FBA00094536 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CEC24E8324AF0FC400094536 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CEC24E8524AF181500094536 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		CEC55FB7265D2F21009D4711 /* EmptySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySection.swift; sourceTree = "<group>"; };
 		CED40A4F24DA99B000384CA2 /* BaseFilterNavView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFilterNavView.swift; sourceTree = "<group>"; };
 		CED40A5124DAAA2500384CA2 /* BaseSettingsNavView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseSettingsNavView.swift; sourceTree = "<group>"; };
 		CEDEE38024AF6C0900FB3781 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				CE0AC3F424B79F6600CBFAA5 /* ShareView.swift */,
 				CE11F32F24FD4FDA004EF64E /* FolderSize.swift */,
 				CEECE04525013BFA00F9D341 /* TextView.swift */,
+				CEC55FB7265D2F21009D4711 /* EmptySection.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -715,6 +718,7 @@
 				CE2BBAF824C356DA00ED0996 /* FilePicker.swift in Sources */,
 				CE8F63CF250BE6760066E190 /* AppState+isTokenValid.swift in Sources */,
 				CE05B4D8249F6E31000E966E /* FavoritesViewModel.swift in Sources */,
+				CEC55FB8265D2F21009D4711 /* EmptySection.swift in Sources */,
 				CE1136AA24DF01860056844D /* FriendEventsVariables.swift in Sources */,
 				CEAFA11624DDB08E00C3A57A /* EventSearchByKeywordResponse.swift in Sources */,
 				CE5971B624E006EC00BBEC95 /* EventView.swift in Sources */,
@@ -884,7 +888,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "\"fbevents/Preview Content\"";
 				DEVELOPMENT_TEAM = MW6F756SFF;
 				ENABLE_PREVIEWS = YES;
@@ -909,7 +913,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "\"fbevents/Preview Content\"";
 				DEVELOPMENT_TEAM = MW6F756SFF;
 				ENABLE_PREVIEWS = YES;

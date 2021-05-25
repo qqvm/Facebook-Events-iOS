@@ -30,12 +30,18 @@ extension Networking {
         }
         var allowStreaming: Bool = false
         var args: Arguments
+        var displayCommentsContextEnableComment = false
+        var displayCommentsContextIsAdPreview = false
+        var displayCommentsContextIsAggregatedShare = false
+        var displayCommentsContextIsStorySet = false
+        var displayCommentsFeedbackContext: String? = nil
+        var feedLocation = "SEARCH"
         var feedbackSource: Int = 23
         var fetchFilters: Bool = false
         var scale: Int = 2
         var streamInitialCount: Int = 0
         var cursor: String?
-        var isComet = true // camelCase
-        var privacySelectorRenderLocation = "COMET_STREAM" // camelCase
+        var count = 5
+        var privacySelectorRenderLocation = "COMET_STREAM"
     }
 }
