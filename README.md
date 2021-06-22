@@ -6,6 +6,12 @@
 
 Facebook Events allows you to discover events from Facebook platform.
 
+Note that Facebook currently has a bug with birthday data, that's why December has no items.
+
+You can install this application in two ways:
+1. Compile it yourself and install through Xcode
+2. Resign ipa file using such tools as [AltServer](https://github.com/rileytestut/AltStore) or [iOS App Signer](https://github.com/DanTheMan827/ios-app-signer) (both open source) and then install it via AltServer or Xcode.
+
 ## Screenshots
 <p float="left">
   <img src="https://i.ibb.co/pLd4JLy/IMG-0011.png" width="200" border="0">
