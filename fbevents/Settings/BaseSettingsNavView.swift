@@ -24,8 +24,7 @@ struct BaseSettingsNavView<Content: View>: View {
             content
         }
         .navigationBarTitle(Text("Settings"), displayMode: .inline)
-        .navigationBarItems(leading: MenuButtonView(),
-                            trailing: RestoreButtonView(action: {withAnimation{self.appState.settings.restoreSettings()}}))
+        .navigationBarItems(leading: MenuButtonView())
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }

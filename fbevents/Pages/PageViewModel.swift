@@ -14,16 +14,11 @@ extension PagesBasicView{
             loadPagesFromDB()
         }
         else{
-            if self.searchKeyword?.wrappedValue ?? "" != ""{
+            if self.searchKeyword != ""{
                 self.pagePager.reset()
                 self.pages.removeAll()
                 self.pagesInFocus.removeAll()
                 self.appState.settings.usePagesSearchInsteadOfPlaces ? self.loadPagesSearchPage() : self.loadPlacesSearchPage()
-            }
-        }
-        if self.isFavoriteTab{
-            withAnimation{
-                self.showSearchField?.wrappedValue = false
             }
         }
     }
@@ -34,9 +29,9 @@ extension PagesBasicView{
                 self.pages.removeAll()
             }
             let pages = try self.appState.dbPool!.read(Page.fetchAll)
-            if self.searchKeyword?.wrappedValue ?? "" != ""{
+            if self.searchKeyword != ""{
                 DispatchQueue.main.async {
-                    self.pages.append(contentsOf: pages.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                    self.pages.append(contentsOf: pages.filter({$0.name.lowercased().contains((self.searchKeyword).lowercased())}))
                 }
             }
             else{
@@ -52,7 +47,7 @@ extension PagesBasicView{
     
     func loadPagesSearchPage(){
         if !self.pagePager.canProceed {return}
-        let requestVars = Networking.PageSearchRequestVariables(args: Networking.PageSearchRequestVariables.Arguments(text: self.searchKeyword?.wrappedValue ?? ""/*, filters: [String]()*/), cursor: self.pagePager.endCursor) // Filters could be added later. Currently, I don't think they are needed.
+        let requestVars = Networking.PageSearchRequestVariables(args: Networking.PageSearchRequestVariables.Arguments(text: self.searchKeyword/*, filters: [String]()*/), cursor: self.pagePager.endCursor) // Filters could be added later. Currently, I don't think they are needed.
 
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -111,7 +106,7 @@ extension PagesBasicView{
     
     func loadPlacesSearchPage(){ // This method searches over places (logically they are pages too but not all pages are places).
         if !self.pagePager.canProceed {return}
-        let requestVars = Networking.PlaceSearchRequestVariables(args: Networking.PlaceSearchRequestVariables.Arguments(text: self.searchKeyword?.wrappedValue ?? ""/*, filters: [String]()*/), cursor: self.pagePager.endCursor)  // Filters could be added later. Currently, I don't think they are needed.
+        let requestVars = Networking.PlaceSearchRequestVariables(args: Networking.PlaceSearchRequestVariables.Arguments(text: self.searchKeyword/*, filters: [String]()*/), cursor: self.pagePager.endCursor)  // Filters could be added later. Currently, I don't think they are needed.
 
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase

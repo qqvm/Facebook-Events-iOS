@@ -14,18 +14,19 @@ struct PagesBasicNavView: View {
     @State var isFavoriteTab = true
     @State var searchKeyword = ""
     @State var showSearchField = false
-    @State var performReload = false
     
     var body: some View{
         VStack{
-            PagesBasicView(isFavoriteTab: isFavoriteTab, searchKeyword: $searchKeyword, showSearchField: $showSearchField, performReload: $performReload).environmentObject(self.appState)
+            PagesBasicView(isFavoriteTab: isFavoriteTab, searchKeyword: $searchKeyword, showSearchField: $showSearchField).environmentObject(self.appState)
         }.navigationBarItems(leading: MenuButtonView(),
             trailing:
             HStack{
                 HStack(alignment: .center, spacing: .zero){
                     RestoreButtonView(){
-                        self.searchKeyword = ""
-                        self.performReload.toggle()
+                        DispatchQueue.main.async {
+                            self.searchKeyword = ""
+                            NotificationCenter.default.post(name: Notification.Name("NeedPagesRefresh"), object: true)
+                        }
                     }.disabled(self.searchKeyword == "")
                     SearchButtonView(){
                         withAnimation{

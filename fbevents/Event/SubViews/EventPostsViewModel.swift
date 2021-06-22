@@ -29,11 +29,12 @@ extension EventPostsView{
                     var posts = [Post]()
                     if let edges = response.data?.event?.pinnedStories.edges{
                         for edge in edges{
+                            if edge.node.message?.text == nil{continue}
                             let post = Post(
                                 id: self.appState.getIdFromFbString(edge.node.storyID),
                                 parentId: self.eventId,
                                 parentType: "Event",
-                                text: edge.node.message?.text ?? "Message has been deleted.",
+                                text: edge.node.message?.text ?? "",
                                 time: edge.node.timestamp,
                                 actors: edge.node.actors.map{(actor: Networking.EventPostsResponse.EdgesEntity.Edge.Node.Actor) in
                                     Actor(id: self.appState.getIdFromFbString(actor.id), type: ActorType(rawValue: actor.__typename)!, name: actor.name, picture: actor.picture.uri)
@@ -46,10 +47,11 @@ extension EventPostsView{
                     }
                     if let edges = response.data?.event?.stories.edges{
                         for edge in edges{
+                            if edge.node.message?.text == nil{continue}
                             let post = Post(
                                 id: self.appState.getIdFromFbString(edge.node.storyID),
                                 parentId: self.eventId,
-                                parentType: "Event", text: edge.node.message?.text ?? "Message has been deleted.",
+                                parentType: "Event", text: edge.node.message?.text ?? "",
                                 time: edge.node.timestamp,
                                 actors: edge.node.actors.map{(actor: Networking.EventPostsResponse.EdgesEntity.Edge.Node.Actor) in
                                     Actor(id: self.appState.getIdFromFbString(actor.id), type: ActorType(rawValue: actor.__typename)!, name: actor.name, picture: actor.picture.uri)

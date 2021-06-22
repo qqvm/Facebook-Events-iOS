@@ -15,16 +15,8 @@ struct PagesBasicView: View {
     @State var isSubview = false
     @State var pages = [Page]()
     @State var pagePager = NetworkPager()
-    var searchKeyword: Binding<String>?
-    var showSearchField: Binding<Bool>?
-    var performReload: Binding<Bool>?{
-        didSet{
-            if performReload?.wrappedValue ?? false{
-                self.refreshPages()
-                performReload?.wrappedValue = false
-            }
-        }
-    }
+    @Binding var searchKeyword: String
+    @Binding var showSearchField: Bool
     @State var pagesInFocus = [Int](){
            didSet{
                //self.appState.logger.log("LOADED", pagesInFocus.count, pagesInFocus.last, pages.count, pages.last?.id)
@@ -40,14 +32,16 @@ struct PagesBasicView: View {
     var body: some View {
         VStack{
             VStack{
-                if showSearchField?.wrappedValue ?? false{
+                if showSearchField{
                     HStack{
-                        TextField(self.appState.settings.usePagesSearchInsteadOfPlaces ? "Search pages" : "Search places", text: self.searchKeyword ?? Binding.constant("")){
+                        TextField(self.appState.settings.usePagesSearchInsteadOfPlaces ? "Search pages" : "Search places", text: self.$searchKeyword){
                             self.refreshPages()
                         }
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         GoButtonView(){
-                            self.refreshPages()
+                            DispatchQueue.main.async {
+                                self.refreshPages()
+                            }
                         }
                     }.disabled(!self.appState.isInternetAvailable && !isFavoriteTab)
                     .padding(.horizontal)
@@ -87,13 +81,25 @@ struct PagesBasicView: View {
                     }.listStyle(PlainListStyle())
                 }.padding()
             }
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NeedPagesRefresh"))) {
+                if $0.object != nil {
+                    DispatchQueue.main.async {
+                        if self.isFavoriteTab{
+                            withAnimation{
+                                self.showSearchField = false
+                            }
+                        }
+                        self.refreshPages()
+                    }
+                }
+            }
             .onAppear(){
                 if self.pages.count == 0{
                     if self.appState.selectedView == .pages && self.isFavoriteTab{
                         self.loadPagesFromDB()
                     }
                     else if self.appState.selectedView == .pages{
-                        self.showSearchField?.wrappedValue = true
+                        self.showSearchField = true
                     }
                 }
             }

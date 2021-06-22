@@ -50,6 +50,9 @@ struct EventPlateView: View{
                         if eventData?.isCanceled ?? false {
                             Image(systemName: "minus.circle").foregroundColor(.red)
                         }
+                        if eventData?.expired ?? false {
+                            Image(systemName: "exclamationmark.arrow.circlepath").foregroundColor(.red)
+                        }
                         if eventData?.hasChildEvents ?? false {
                             Image(systemName: "cube.box").foregroundColor(.gray)
                         }

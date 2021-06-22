@@ -65,7 +65,7 @@ struct UserSettings: Codable{
     
     static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
     static let appBuildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as! String
-    static let buttonSize: CGFloat = UIScreen.main.bounds.width >= UIScreen.main.bounds.height ? UIScreen.main.bounds.height / 16 : UIScreen.main.bounds.width / 16 // ~24
+    static let buttonSize: CGFloat = UIScreen.main.bounds.width >= 500 ? 28 : 22 // UIScreen.main.bounds.width >= UIScreen.main.bounds.height ? UIScreen.main.bounds.height / 16 : UIScreen.main.bounds.width / 16 // ~24
     static var notificationInterval: Double = 3600
     static var eventCacheOverheadNumber: Int = 100
     

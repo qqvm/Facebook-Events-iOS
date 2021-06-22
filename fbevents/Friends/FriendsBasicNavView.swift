@@ -14,18 +14,19 @@ struct FriendsBasicNavView: View {
     @State var isFavoriteTab = true
     @State var searchKeyword = ""
     @State var showSearchField = false
-    @State var performReload = false
     
     var body: some View{
         VStack{
-            FriendsBasicView(searchKeyword: $searchKeyword, showSearchField: $showSearchField, performReload: $performReload, isFavoriteTab: isFavoriteTab)
+            FriendsBasicView(searchKeyword: $searchKeyword, showSearchField: $showSearchField, isFavoriteTab: isFavoriteTab)
         }.navigationBarItems(leading: MenuButtonView(),
             trailing:
             HStack{
                 HStack(alignment: .center, spacing: .zero){
                     RestoreButtonView(){
-                        self.searchKeyword = ""
-                        self.performReload.toggle()
+                        DispatchQueue.main.async {
+                            self.searchKeyword = ""
+                            NotificationCenter.default.post(name: Notification.Name("NeedFriendsRefresh"), object: true)
+                        }
                     }.disabled(self.searchKeyword == "")
                     SearchButtonView(){
                         withAnimation{

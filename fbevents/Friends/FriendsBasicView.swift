@@ -14,16 +14,8 @@ struct FriendsBasicView: View {
     @State var isSubview = false
     @State var originId = 0
     @State var friends = [User]()
-    var searchKeyword: Binding<String>?
-    var showSearchField: Binding<Bool>?
-    var performReload: Binding<Bool>?{
-        didSet{
-            if performReload?.wrappedValue ?? false{
-                self.refreshFriends()
-                performReload?.wrappedValue = false
-            }
-        }
-    }
+    @Binding var searchKeyword: String
+    @Binding var showSearchField: Bool
     @State var isFavoriteTab = true
     @State var friendPager = NetworkPager()
     @State var friendsInFocus = [Int](){
@@ -41,14 +33,16 @@ struct FriendsBasicView: View {
     var body: some View {
         VStack{
             VStack{
-                if showSearchField?.wrappedValue ?? false{
+                if showSearchField{
                     HStack{
-                        TextField("Search friends", text: self.searchKeyword ?? Binding.constant("")){
+                        TextField("Search friends", text: self.$searchKeyword){
                             self.refreshFriends()
                         }
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         GoButtonView(){
-                            self.refreshFriends()
+                            DispatchQueue.main.async {
+                                self.refreshFriends()
+                            }
                         }
                     }.disabled(!self.appState.isInternetAvailable && !isFavoriteTab)
                     .padding(.horizontal)
@@ -88,6 +82,16 @@ struct FriendsBasicView: View {
                     }//.listStyle(PlainListStyle())
                 }.padding()
             }
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NeedFriendsRefresh"))) {
+                if $0.object != nil {
+                    DispatchQueue.main.async {
+                        withAnimation{
+                            self.showSearchField = false
+                        }
+                        self.refreshFriends()
+                    }
+                }
+            }
             .onAppear(){
                 if self.friends.count == 0{
                     if self.isFavoriteTab{
@@ -107,6 +111,6 @@ struct FriendsBasicView: View {
 
 struct FriendsBaseView_Previews: PreviewProvider {
     static var previews: some View {
-        FriendsBasicView().environmentObject(AppState())
+        FriendsBasicView(searchKeyword: Binding.constant(""), showSearchField: Binding.constant(true)).environmentObject(AppState())
     }
 }

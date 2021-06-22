@@ -145,113 +145,126 @@ struct EventView: View {
                         }
                         EventImageView(url: URL(string: self.event!.coverPhoto))
                         VStack(alignment: .leading, spacing: 10){
-                            if self.event!.endDate != nil{
-                                if self.event!.isMultiYear{
-                                    Text(AppState.getFormattedDate(self.event!.startTimestamp, withYear: true) + " - ")
-                                    .fontWeight(.semibold)
-                                    Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay, withYear: true))
-                                    .fontWeight(.semibold)
-                                }
-                                else if self.event!.multiDay{
-                                    Text(AppState.getFormattedDate(self.event!.startTimestamp) + " - ")
-                                    .fontWeight(.semibold)
-                                    Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay))
-                                    .fontWeight(.semibold)
-                                }
-                                else {
-                                    Text(AppState.getFormattedDate(self.event!.startTimestamp) + " - ")
-                                    .fontWeight(.semibold)
-                                        + Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay))
-                                    .fontWeight(.semibold)
-                                }
-                            }
-                            if self.event!.eventPlaceAddress.contains(",") &&
-                                UIApplication.shared.canOpenURL(URL(string: "https://maps.apple.com/?q=\(self.event!.eventPlaceAddress.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? "")")!){
-                                Button(action: {
-                                    UIApplication.shared.open(URL(string: "https://maps.apple.com/?q=\(self.event!.eventPlaceAddress.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? "")")!)
-                                }, label: {Text(self.event!.eventPlaceAddress)})
-                            }
-                            else if self.event!.eventPlaceAddress != ""{
-                                Text(self.event!.eventPlaceAddress)
-                                    .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
-                            }
-                            if self.event!.hosts.count > 0{
-                                ForEach(self.event!.hosts, id: \.id){(host: Actor) in
-                                    Group{
-                                        if host.type == .page{
-                                            NavigationLink(destination: PageEventsView(isSubview: true, originId: self.originId, page: Page(id: host.id, name: host.name, picture: host.picture))){
-                                                Text(host.name).fixedSize(horizontal: false, vertical: true)
+                            Group{
+                                VStack{
+                                    if self.event!.endDate != nil{
+                                        VStack{
+                                            if self.event!.isMultiYear{
+                                                Text(AppState.getFormattedDate(self.event!.startTimestamp, withYear: true) + " - ")
+                                                .fontWeight(.semibold)
+                                                Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay, withYear: true))
+                                                .fontWeight(.semibold)
                                             }
-                                        }
-                                        else if host.type == .user{
-                                            NavigationLink(destination: UserEventsView(isSubview: true, originId: self.originId,
-                                                                user: User(id: host.id, name: host.name, picture: host.picture))){
-                                                Text(host.name).fixedSize(horizontal: false, vertical: true)
+                                            else if self.event!.multiDay{
+                                                Text(AppState.getFormattedDate(self.event!.startTimestamp) + " - ")
+                                                .fontWeight(.semibold)
+                                                Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay))
+                                                .fontWeight(.semibold)
                                             }
-                                        }
+                                            else {
+                                                Text(AppState.getFormattedDate(self.event!.startTimestamp) + " - ")
+                                                .fontWeight(.semibold)
+                                                    + Text(AppState.getFormattedDate(self.event!.endTimestamp, isLong: self.event!.multiDay))
+                                                .fontWeight(.semibold)
+                                            }
+                                        } .foregroundColor(self.event?.expired ?? false ? .red : .accentColor)
+                                    }
+                                    else{
+                                        Text(AppState.getFormattedDate(self.event!.startTimestamp))
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(self.event?.expired ?? false ? .red : .accentColor)
                                     }
                                 }
-                            }
-                            else{
-                                Text(self.event!.eventPlaceName == self.event!.eventPlaceAddress ? "No place name" : self.event!.eventPlaceName)
-                                    .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
-                            }
-                            HStack{
-                                if self.event!.categoryName != nil{
-                                    Text(self.event!.categoryName!)
+                                if self.event!.eventPlaceAddress.contains(",") &&
+                                    UIApplication.shared.canOpenURL(URL(string: "https://maps.apple.com/?q=\(self.event!.eventPlaceAddress.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? "")")!){
+                                    Button(action: {
+                                        UIApplication.shared.open(URL(string: "https://maps.apple.com/?q=\(self.event!.eventPlaceAddress.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? "")")!)
+                                    }, label: {Text(self.event!.eventPlaceAddress)})
+                                }
+                                else if self.event!.eventPlaceAddress != ""{
+                                    Text(self.event!.eventPlaceAddress)
                                         .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                 }
+                                if self.event!.hosts.count > 0{
+                                    ForEach(self.event!.hosts, id: \.id){(host: Actor) in
+                                        Group{
+                                            if host.type == .page{
+                                                NavigationLink(destination: PageEventsView(isSubview: true, originId: self.originId, page: Page(id: host.id, name: host.name, picture: host.picture))){
+                                                    Text(host.name).fixedSize(horizontal: false, vertical: true)
+                                                }
+                                            }
+                                            else if host.type == .user{
+                                                NavigationLink(destination: UserEventsView(isSubview: true, originId: self.originId,
+                                                                    user: User(id: host.id, name: host.name, picture: host.picture))){
+                                                    Text(host.name).fixedSize(horizontal: false, vertical: true)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                 else{
-                                    Text(self.event!.previewSocialContext)
-                                    .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
+                                    Text(self.event!.eventPlaceName == self.event!.eventPlaceAddress ? "No place name" : self.event!.eventPlaceName)
+                                        .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                 }
-                                if self.event!.goingGuests != nil &&  self.event!.interestedGuests != nil && self.event!.goingFriends != nil &&  self.event!.interestedFriends != nil{
-                                    if self.event!.goingGuests != 0 {
-                                        Image(systemName: "person.badge.plus")
-                                        Text("\(self.event!.goingGuests!)")
+                            }
+                            Group{
+                                HStack{
+                                    if self.event!.categoryName != nil{
+                                        Text(self.event!.categoryName!)
                                             .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                     }
-                                    if self.event!.interestedGuests != 0 {
-                                        Image(systemName: "person")
-                                        Text("\(self.event!.interestedGuests!)")
-                                            .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
+                                    else{
+                                        Text(self.event!.previewSocialContext)
+                                        .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                     }
-                                    if self.event!.memberFriends.count != 0 {
-                                        NavigationLink(destination: FriendsBasicView(isSubview: true, originId: self.originId, friends: self.event!.memberFriends, isFavoriteTab: false)){
-                                            Image(systemName: "person.crop.circle.badge.plus")
-                                            Text("\(self.event!.memberFriends.count)")
+                                    if self.event!.goingGuests != nil &&  self.event!.interestedGuests != nil && self.event!.goingFriends != nil &&  self.event!.interestedFriends != nil{
+                                        if self.event!.goingGuests != 0 {
+                                            Image(systemName: "person.badge.plus")
+                                            Text("\(self.event!.goingGuests!)")
                                                 .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                         }
-                                    }
-                                    if self.event!.maybeFriends.count != 0 {
-                                        NavigationLink(destination: FriendsBasicView(isSubview: true, originId: self.originId, friends: self.event!.maybeFriends, isFavoriteTab: false)){
-                                            Image(systemName: "person.crop.circle")
-                                            Text("\(self.event!.maybeFriends.count)")
+                                        if self.event!.interestedGuests != 0 {
+                                            Image(systemName: "person")
+                                            Text("\(self.event!.interestedGuests!)")
                                                 .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
                                         }
+                                        if self.event!.memberFriends.count != 0 {
+                                            NavigationLink(destination: FriendsBasicView(isSubview: true, originId: self.originId, friends: self.event!.memberFriends, searchKeyword: Binding.constant(""), showSearchField: Binding.constant(false), isFavoriteTab: false)){
+                                                Image(systemName: "person.crop.circle.badge.plus")
+                                                Text("\(self.event!.memberFriends.count)")
+                                                    .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
+                                            }
+                                        }
+                                        if self.event!.maybeFriends.count != 0 {
+                                            NavigationLink(destination: FriendsBasicView(isSubview: true, originId: self.originId, friends: self.event!.maybeFriends, searchKeyword: Binding.constant(""), showSearchField: Binding.constant(false), isFavoriteTab: false)){
+                                                Image(systemName: "person.crop.circle")
+                                                Text("\(self.event!.maybeFriends.count)")
+                                                    .foregroundColor(Color(self.colorScheme == .light ? .darkGray : .lightGray))
+                                            }
+                                        }
+                                    }
+                                    Spacer()
+                                }
+                                if self.event!.isCanceled != nil{
+                                    if self.event!.isCanceled!{
+                                        Text("Canceled")
+                                            .foregroundColor(Color(.red))
                                     }
                                 }
-                                Spacer()
-                            }
-                            if self.event!.isCanceled != nil{
-                                if self.event!.isCanceled!{
-                                    Text("Canceled")
-                                        .foregroundColor(Color(.red))
+                                if self.aproxTextHeight > 0{
+                                    VStack{
+                                        TextView(text: self.event!.eventDescription)
+                                            .frame(width: reader.frame(in: .global).origin.x > 30 ? UIScreen.main.bounds.width / 2 :  UIScreen.main.bounds.width - 40, height: reader.frame(in: .global).origin.x > 30 ? self.aproxTextHeight * 1.55 : self.aproxTextHeight, alignment: .leading)
+                                        .padding(.trailing)
+                                    }
                                 }
-                            }
-                            if self.aproxTextHeight > 0{
-                                VStack{
-                                    TextView(text: self.event!.eventDescription)
-                                        .frame(width: reader.frame(in: .global).origin.x > 30 ? UIScreen.main.bounds.width / 2 :  UIScreen.main.bounds.width - 40, height: reader.frame(in: .global).origin.x > 30 ? self.aproxTextHeight * 1.55 : self.aproxTextHeight, alignment: .leading)
-                                    .padding(.trailing)
-                                }
-                            }
-                            else{
-                                VStack{
-                                    Text(self.event!.eventDescription)
-                                    .multilineTextAlignment(.leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .lineLimit(nil)
+                                else{
+                                    VStack{
+                                        Text(self.event!.eventDescription)
+                                        .multilineTextAlignment(.leading)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .lineLimit(nil)
+                                    }
                                 }
                             }
                         }

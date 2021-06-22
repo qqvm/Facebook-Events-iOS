@@ -212,12 +212,16 @@ struct SettingsView: View {
                         self.showSheet.toggle()}){
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(self.colorScheme == .light ? Color.black : Color.white)
-                            .frame(width: 180, height: 40, alignment: .center)
+                            .frame(width: 200, height: 40, alignment: .center)
                             .opacity(0.4)
                             .overlay(
                                 HStack{
                                     Image(systemName: "desktopcomputer")
+                                        .padding(.leading)
+                                    Spacer()
                                     Text("Start screen")
+                                        .fixedSize()
+                                    Spacer()
                                 }
                                 .font(.system(size: 22))
                         )
@@ -225,15 +229,37 @@ struct SettingsView: View {
                                 self.generateActionSheet()
                             }
                     }
+                    Button(action: {withAnimation{self.appState.settings.restoreSettings()}}){
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(self.colorScheme == .light ? Color.black : Color.white)
+                            .frame(width: 200, height: 40, alignment: .center)
+                            .opacity(0.4)
+                            .overlay(
+                                HStack{
+                                    Image(systemName: "arrow.counterclockwise")
+                                        .padding(.leading)
+                                    Spacer()
+                                    Text("Reset settings")
+                                        .fixedSize()
+                                    Spacer()
+                                }
+                                .font(.system(size: 22))
+                            )
+                    }
+                    //
                     Button(action: {self.appState.backupSettings()}){
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(self.colorScheme == .light ? Color.black : Color.white)
-                            .frame(width: 180, height: 40, alignment: .center)
+                            .frame(width: 200, height: 40, alignment: .center)
                             .opacity(0.4)
                             .overlay(
                                 HStack{
                                     Image(systemName: "tray.and.arrow.up")
+                                        .padding(.leading)
+                                    Spacer()
                                     Text("Back up")
+                                        .fixedSize()
+                                    Spacer()
                                 }
                                 .font(.system(size: 22))
                             )
@@ -241,13 +267,16 @@ struct SettingsView: View {
                     Button(action: {self.appState.showImport = true}){
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(self.colorScheme == .light ? Color.black : Color.white)
-                            .frame(width: 180, height: 40, alignment: .center)
+                            .frame(width: 200, height: 40, alignment: .center)
                             .opacity(0.4)
                             .overlay(
                                 HStack{
                                     Image(systemName: "tray.and.arrow.down")
+                                        .padding(.leading)
+                                    Spacer()
                                     Text("Restore")
                                         .fixedSize()
+                                    Spacer()
                                 }
                                     .font(.system(size: 22))
                             )
@@ -262,14 +291,17 @@ struct SettingsView: View {
                     }){
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(self.colorScheme == .light ? Color.black : Color.white)
-                            .frame(width: 180, height: 50, alignment: .center)
+                            .frame(width: 200, height: 50, alignment: .center)
                             .opacity(0.4)
                             .overlay(
                                 VStack(alignment: .center, spacing: .zero){
                                     HStack{
                                         Image(systemName: "trash")
+                                            .padding(.leading)
+                                        Spacer()
                                         Text("Wipe cache")
                                             .fixedSize()
+                                        Spacer()
                                     }.font(.system(size: 22))
                                     Text(self.cacheSize)
                                         .font(.system(size: 14))
@@ -293,14 +325,17 @@ struct SettingsView: View {
                     }){
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(self.colorScheme == .light ? Color.black : Color.white)
-                            .frame(width: 180, height: 50, alignment: .center)
+                            .frame(width: 200, height: 50, alignment: .center)
                             .opacity(0.4)
                             .overlay(
                                 VStack(alignment: .center, spacing: .zero){
                                     HStack{
                                         Image(systemName: "trash")
+                                            .padding(.leading)
+                                        Spacer()
                                         Text("Wipe data")
                                             .fixedSize()
+                                        Spacer()
                                     }.font(.system(size: 22))
                                     Text(self.diskSize)
                                         .font(.system(size: 14))

@@ -22,7 +22,6 @@ struct PagePlateView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70, alignment: .leading)
-                    .padding(.trailing)
             }
             else{
                 Text(page.picture)

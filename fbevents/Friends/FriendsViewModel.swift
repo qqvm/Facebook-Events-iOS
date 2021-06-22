@@ -83,18 +83,15 @@ extension FriendsBasicView{
             self.friendsInFocus.removeAll()
             self.loadMyFriendsPage()
         }
-        withAnimation{
-            self.showSearchField?.wrappedValue = false
-        }
     }
     
     func loadFriendsFromDB(){
         do{
             self.friends.removeAll()
             let friends = try self.appState.dbPool!.read(User.fetchAll)
-            if self.searchKeyword?.wrappedValue ?? "" != ""{
+            if self.searchKeyword != ""{
                 DispatchQueue.main.async {
-                    self.friends.append(contentsOf: friends.filter({$0.name.lowercased().contains((self.searchKeyword?.wrappedValue ?? "").lowercased())}))
+                    self.friends.append(contentsOf: friends.filter({$0.name.lowercased().contains((self.searchKeyword).lowercased())}))
                 }
             }
             else{
@@ -111,8 +108,8 @@ extension FriendsBasicView{
     func loadMyFriendsPage(){
         if !self.friendPager.canProceed || self.appState.settings.userId == 0{return}
         var requestVars = Networking.FriendListPageVariables(cursor: self.friendPager.endCursor, id: Data("app_collection:\(self.appState.settings.userId):2356318349:2".utf8).base64EncodedString())
-        if self.searchKeyword?.wrappedValue ?? "" != ""{
-            requestVars.search = self.searchKeyword?.wrappedValue ?? ""
+        if self.searchKeyword != ""{
+            requestVars.search = self.searchKeyword
         }
         
         let encoder = JSONEncoder()

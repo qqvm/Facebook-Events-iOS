@@ -35,10 +35,11 @@ struct CitySearchBasicView: View {
                 if cityData != nil{
                     self.appState.settings.cityId =  Int(cityData!.id)!
                     self.appState.settings.cityName = cityData!.name
-                    self.appState.settings.cityLat =  cityData!.location.latitude
-                    self.appState.settings.cityLon =  cityData!.location.longitude
+                    self.appState.settings.cityLat = Double(String(format: "%.4f", cityData!.location.latitude))!
+                    self.appState.settings.cityLon = Double(String(format: "%.4f", cityData!.location.longitude))!
                     self.searchCityName = cityData!.name
                     self.appState.settings.filterChanged = true
+                    self.appState.settings.saveAll()
                 }
             }
         }
@@ -61,14 +62,18 @@ struct CitySearchBasicView: View {
             GPSButtonView(action: {
                 self.currentLocation.startLocationManager()
             })
+                .buttonStyle(PlainButtonStyle())
+                .foregroundColor(.blue)
                 .onReceive(self.currentLocation.$location){location in
                     if location.coordinate.latitude != 0 && location.coordinate.longitude != 0 {
-                        self.appState.settings.cityLat = location.coordinate.latitude
-                        self.appState.settings.cityLon = location.coordinate.longitude
+                        self.appState.settings.cityLat = Double(String(format: "%.4f", location.coordinate.latitude))!
+                        self.appState.settings.cityLon = Double(String(format: "%.4f", location.coordinate.longitude))!
                         self.appState.settings.useCoordinates = true
-                        self.appState.settings.cityName = "\(location.coordinate)"
+                        self.appState.settings.cityName = "\(self.appState.settings.cityLat), \(self.appState.settings.cityLon)"
+                        searchCityName = "\(self.appState.settings.cityLat), \(self.appState.settings.cityLon)"
                         self.appState.settings.cityId = 0
                         self.currentLocation.stopLocationManager()
+                        self.appState.settings.saveAll()
                     }
             }
             SearchButtonView(action: {
@@ -80,8 +85,10 @@ struct CitySearchBasicView: View {
                     }
                 }
             })
+                .buttonStyle(PlainButtonStyle())
+                .foregroundColor(.blue)
+            
         }
-        .disabled(self.appState.settings.token == "")
         .onAppear(){
             self.searchCityName = self.appState.settings.cityName
         }
