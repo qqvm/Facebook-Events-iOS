@@ -48,9 +48,9 @@ struct LoginView: View {
                     VStack{
                         Text("2FA Code:")
                         HStack{
-                            TextField("", text: $code, onCommit: {
+                            TextField("", text: $code){
                                 self.secondStageAction()
-                            })
+                            }
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .border(success > 0 || appState.settings.token != "" ? Color.green : success < 0 ? Color.red : Color(UIColor.systemGray3)).cornerRadius(3)
                                 .keyboardType(.numberPad)
@@ -63,9 +63,9 @@ struct LoginView: View {
                 }
                 else{
                     VStack{
-                        TextField("Email", text: $email, onCommit: {
+                        TextField("Email", text: $email){
                             self.firstStageAction()
-                        })
+                        }
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .border(success > 0 || showSecondFactor ? Color.green : success < 0 ? Color.red : Color(UIColor.systemGray3)).cornerRadius(3)
                             .keyboardType(.default)
