@@ -46,19 +46,43 @@ extension UserSettings {
                 }
                 else{
                     var loadedEvents = [Event]()
-                    try dbPool!.write{db in
+                    var loadedUsers = [User]()
+                    var loadedPages = [Page]()
+                    var loadedPosts = [Post]()
+                    var loadedComments = [Comment]()
+                    try? dbPool!.read{db in // possibly load and drop other tables here
                         if try db.tableExists("event"){
                             loadedEvents.append(contentsOf: try Event.fetchAll(db))
-                            try db.drop(table: "event")
-                            // possibly load and drop other tables here
+                            try dbPool!.write{db in
+                                try db.drop(table: "event")
+                            }
+                        }
+                        if try db.tableExists("user"){
+                            loadedUsers.append(contentsOf: try User.fetchAll(db))
+                            try dbPool!.write{db in
+                                try db.drop(table: "user")
+                            }
+                        }
+                        if try db.tableExists("page"){
+                            loadedPages.append(contentsOf: try Page.fetchAll(db))
+                            try dbPool!.write{db in
+                                try db.drop(table: "page")
+                            }
+                        }
+                        if try db.tableExists("post"){
+                            loadedPosts.append(contentsOf: try Post.fetchAll(db))
+                            try dbPool!.write{db in
+                                try db.drop(table: "post")
+                            }
+                        }
+                        if try db.tableExists("comment"){
+                            loadedComments.append(contentsOf: try Comment.fetchAll(db))
+                            try dbPool!.write{db in
+                                try db.drop(table: "comment")
+                            }
                         }
                     }
                     eventMigrator.registerMigration(migrationName) { db in
-                        if try db.tableExists("event"){
-                            loadedEvents.append(contentsOf: try Event.fetchAll(db))
-                            try db.drop(table: "event")
-                            // possibly load and drop other tables here
-                        }
                         if !(try db.tableExists("user")){
                             try db.create(table: "user") { t in
                                 t.column("id", .integer).primaryKey().unique().notNull()
@@ -68,6 +92,7 @@ extension UserSettings {
                                 t.column("birthDay", .integer)
                                 t.column("birthMonth", .integer)
                                 t.column("birthdate", .text)
+                                t.column("imageData", .blob)
                             }
                         }
                         if !(try db.tableExists("page")){
@@ -76,6 +101,7 @@ extension UserSettings {
                                 t.column("name", .text).notNull()
                                 t.column("picture", .text).notNull()
                                 t.column("address", .text)
+                                t.column("imageData", .blob)
                             }
                         }
                         if !(try db.tableExists("post")){
@@ -129,6 +155,7 @@ extension UserSettings {
                             t.column("endDate", .datetime)
                             t.column("timeOfTheDay", .text).notNull()
                             t.column("weekDay", .integer).notNull()
+                            t.column("imageData", .blob)
                             
                             t.column("hosts", .blob)
                             t.column("eventKind", .text)
@@ -152,6 +179,18 @@ extension UserSettings {
                     }
                     try eventMigrator.migrate(dbPool!)
                     loadedEvents.forEach{
+                        _ = $0.save(dbPool: dbPool!)
+                    }
+                    loadedUsers.forEach{
+                        _ = $0.save(dbPool: dbPool!)
+                    }
+                    loadedPages.forEach{
+                        _ = $0.save(dbPool: dbPool!)
+                    }
+                    loadedPosts.forEach{
+                        _ = $0.save(dbPool: dbPool!)
+                    }
+                    loadedComments.forEach{
                         _ = $0.save(dbPool: dbPool!)
                     }
                 }

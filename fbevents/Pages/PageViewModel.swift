@@ -74,12 +74,15 @@ extension PagesBasicView{
                 appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: false){(response: Networking.PageSearchResponse) in
                     if let edges = response.data?.serpResponse?.results.edges{
                         for edge in edges{
-                            let page = Page(
+                            var page = Page(
                                 id: Int(edge.relayRenderingStrategy.viewModel.profile?.id ?? "0")!,
                                 name: edge.relayRenderingStrategy.viewModel.profile?.name ?? "No Title",
                                 picture: edge.relayRenderingStrategy.viewModel.profile?.profilePicture.uri ?? ""
                             )
-                            if page.exists(dbPool: self.appState.dbPool!) && page.picture != ""{
+                            if let imageUrl = URL(string: page.picture){
+                                page.imageData = try? Data(contentsOf: imageUrl)
+                            }
+                            if page.exists(dbPool: self.appState.dbPool!){
                                 _ = page.updateInDB(dbPool: self.appState.dbPool!)
                             }
                             _ = page.exists(dbPool: self.appState.cacheDbPool!) ? page.updateInDB(dbPool: self.appState.cacheDbPool!) : page.save(dbPool: self.appState.cacheDbPool!)
@@ -133,14 +136,17 @@ extension PagesBasicView{
                 appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: false){(response: Networking.PlaceSearchResponse) in
                     if let edges = response.data?.serpResponse?.results.edges{
                         for edge in edges{
-                            let page = Page(
+                            var page = Page(
                                 id: Int(edge.relayRenderingStrategy.viewModel.placeViewModel?.id.split(separator: "-")[1] ?? "0")!,
                                 name: edge.relayRenderingStrategy.viewModel.placeViewModel?.title ?? "No Title",
                                 picture: edge.relayRenderingStrategy.viewModel.placeViewModel?.profilePictureUri ?? "",
                                 address: edge.relayRenderingStrategy.viewModel.placeViewModel?.placesSnippetModel?.location?.address
                             )
                             if page.id == 0{continue}
-                            if page.exists(dbPool: self.appState.dbPool!) && page.picture != ""{
+                            if let imageUrl = URL(string: page.picture){
+                                page.imageData = try? Data(contentsOf: imageUrl)
+                            }
+                            if page.exists(dbPool: self.appState.dbPool!){
                                 _ = page.updateInDB(dbPool: self.appState.dbPool!)
                             }
                             _ = page.exists(dbPool: self.appState.cacheDbPool!) ? page.updateInDB(dbPool: self.appState.cacheDbPool!) : page.save(dbPool: self.appState.cacheDbPool!)
@@ -197,11 +203,15 @@ extension PageEventsView{
                 appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.PageEventsResponse) in
                     if let edges = response.data?.page?.upcomingEvents?.edges{
                         for edge in edges{
-                            let event = SimpleEvent(
+                            var event = SimpleEvent(
                                 id: Int(edge.node.id)!,
                                 name: edge.node.name,
-                                coverPhoto: "", dayTimeSentence: edge.node.shortTimeLabel
+                                coverPhoto: "",
+                                dayTimeSentence: edge.node.shortTimeLabel
                             )
+                            if let imageUrl = URL(string: page.picture){
+                                event.imageData = try? Data(contentsOf: imageUrl)
+                            }
                             DispatchQueue.main.async {
                                 if !self.pageEvents.contains(where: {$0.id == event.id}){
                                     self.pageEvents.append(event)
@@ -242,11 +252,15 @@ extension PageEventsView{
                 appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.PageEventsResponse) in
                     if let edges = response.data?.page?.upcomingRecurringEvents?.edges{
                         for edge in edges{
-                            let event = SimpleEvent(
+                            var event = SimpleEvent(
                                 id: Int(edge.node.id)!,
                                 name: edge.node.name,
-                                coverPhoto: "", dayTimeSentence: edge.node.timeContext
+                                coverPhoto: "",
+                                dayTimeSentence: edge.node.timeContext
                             )
+                            if let imageUrl = URL(string: page.picture){
+                                event.imageData = try? Data(contentsOf: imageUrl)
+                            }
                             DispatchQueue.main.async {
                                 if !self.pageEvents.contains(where: {$0.id == event.id}){
                                     self.pageEvents.append(event)

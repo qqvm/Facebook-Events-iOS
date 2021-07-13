@@ -70,6 +70,7 @@
 		CE71536C249E540700DB8574 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE71536B249E540700DB8574 /* Preview Assets.xcassets */; };
 		CE71536F249E540700DB8574 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE71536D249E540700DB8574 /* LaunchScreen.storyboard */; };
 		CE715379249E713B00DB8574 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE715378249E713B00DB8574 /* EventType.swift */; };
+		CE7D8A63269D8CA0007A63AC /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D8A62269D8CA0007A63AC /* ImageView.swift */; };
 		CE7E94CA25093DCC00BFD7D4 /* PostCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E94C925093DCC00BFD7D4 /* PostCommentsViewModel.swift */; };
 		CE7E94CC2509503E00BFD7D4 /* PostCommentsVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E94CB2509503E00BFD7D4 /* PostCommentsVariables.swift */; };
 		CE7E94CE2509506A00BFD7D4 /* PostCommentsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E94CD2509506A00BFD7D4 /* PostCommentsResponse.swift */; };
@@ -115,7 +116,6 @@
 		CEC55FB8265D2F21009D4711 /* EmptySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC55FB7265D2F21009D4711 /* EmptySection.swift */; };
 		CECB49EC24D962B100C1F672 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49EB24D962B100C1F672 /* GRDB */; };
 		CECB49EF24D962DD00C1F672 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49EE24D962DD00C1F672 /* SwiftDate */; };
-		CECB49F224D9630E00C1F672 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CECB49F124D9630E00C1F672 /* SDWebImageSwiftUI */; };
 		CED40A5024DA99B000384CA2 /* BaseFilterNavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED40A4F24DA99B000384CA2 /* BaseFilterNavView.swift */; };
 		CED40A5224DAAA2500384CA2 /* BaseSettingsNavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED40A5124DAAA2500384CA2 /* BaseSettingsNavView.swift */; };
 		CEDEE38124AF6C0900FB3781 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDEE38024AF6C0900FB3781 /* InfoView.swift */; };
@@ -194,6 +194,7 @@
 		CE71536E249E540700DB8574 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE715370249E540700DB8574 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE715378249E713B00DB8574 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
+		CE7D8A62269D8CA0007A63AC /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		CE7E94C925093DCC00BFD7D4 /* PostCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentsViewModel.swift; sourceTree = "<group>"; };
 		CE7E94CB2509503E00BFD7D4 /* PostCommentsVariables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentsVariables.swift; sourceTree = "<group>"; };
 		CE7E94CD2509506A00BFD7D4 /* PostCommentsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentsResponse.swift; sourceTree = "<group>"; };
@@ -254,7 +255,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CECB49F224D9630E00C1F672 /* SDWebImageSwiftUI in Frameworks */,
 				CECB49EF24D962DD00C1F672 /* SwiftDate in Frameworks */,
 				CECB49EC24D962B100C1F672 /* GRDB in Frameworks */,
 			);
@@ -338,6 +338,7 @@
 				CE37CBBF24BC834A00251AFB /* RefreshButton.swift */,
 				CE37CBC124BC837400251AFB /* FilterButton.swift */,
 				CE37CBC524BC887800251AFB /* RestoreButton.swift */,
+				CE7D8A62269D8CA0007A63AC /* ImageView.swift */,
 				CE37CBC324BC838500251AFB /* SearchButton.swift */,
 				CE37CBC724BC89B600251AFB /* GPSButton.swift */,
 				CE37CBC924BC89C700251AFB /* GoButton.swift */,
@@ -574,7 +575,6 @@
 			packageProductDependencies = (
 				CECB49EB24D962B100C1F672 /* GRDB */,
 				CECB49EE24D962DD00C1F672 /* SwiftDate */,
-				CECB49F124D9630E00C1F672 /* SDWebImageSwiftUI */,
 			);
 			productName = fbevents;
 			productReference = CE71535F249E540500DB8574 /* FBEvents.app */;
@@ -607,7 +607,6 @@
 			packageReferences = (
 				CECB49EA24D962B100C1F672 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				CECB49ED24D962DD00C1F672 /* XCRemoteSwiftPackageReference "SwiftDate" */,
-				CECB49F024D9630E00C1F672 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = CE715360249E540500DB8574 /* Products */;
 			projectDirPath = "";
@@ -739,6 +738,7 @@
 				CEAFA11A24DDB20A00C3A57A /* EventDetailsResponse.swift in Sources */,
 				CE9BA43724E42A7D00FAC827 /* FriendListPageResponse.swift in Sources */,
 				CE8E22EF24A128800003FF5B /* EventViewModel.swift in Sources */,
+				CE7D8A63269D8CA0007A63AC /* ImageView.swift in Sources */,
 				CE42758824E6AE5E00FA73EC /* PageEventsView.swift in Sources */,
 				CE0AC3F524B79F6600CBFAA5 /* ShareView.swift in Sources */,
 				CE05B4DF249F7210000E966E /* FilterTabView.swift in Sources */,
@@ -817,7 +817,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -872,7 +872,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -886,11 +886,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "\"fbevents/Preview Content\"";
-				DEVELOPMENT_TEAM = MW6F756SFF;
+				DEVELOPMENT_TEAM = LXMU6KJNUJ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = fbevents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -899,9 +899,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.nonced.FacebookEvents;
+				PRODUCT_BUNDLE_IDENTIFIER = foxy.net.nonced.FacebookEvents;
 				PRODUCT_NAME = FBEvents;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Foxy_app_ad_hoc_provision;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -911,11 +911,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "\"fbevents/Preview Content\"";
-				DEVELOPMENT_TEAM = MW6F756SFF;
+				DEVELOPMENT_TEAM = LXMU6KJNUJ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = fbevents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -924,9 +924,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.nonced.FacebookEvents;
+				PRODUCT_BUNDLE_IDENTIFIER = foxy.net.nonced.FacebookEvents;
 				PRODUCT_NAME = FBEvents;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Foxy_app_ad_hoc_provision;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -972,14 +972,6 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		CECB49F024D9630E00C1F672 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -992,11 +984,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CECB49ED24D962DD00C1F672 /* XCRemoteSwiftPackageReference "SwiftDate" */;
 			productName = SwiftDate;
-		};
-		CECB49F124D9630E00C1F672 /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CECB49F024D9630E00C1F672 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

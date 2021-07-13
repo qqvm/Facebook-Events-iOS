@@ -45,12 +45,15 @@ extension UserEventsView{
                 appState.networkManager?.postURL(urlComponents: components, withToken: true){(response: Networking.FriendEventsResponse) in
                     if let edges = response.data?.node?.pageItems.edges{
                         for edge in edges{
-                            let event = SimpleEvent(
+                            var event = SimpleEvent(
                                 id: Int(edge.node.node?.id ?? "0")!,
                                 name: edge.node.title.text,
                                 coverPhoto: edge.node.image.uri,
                                 dayTimeSentence: edge.node.subtitleText.text
                             )
+                            if let imageUrl = URL(string: event.coverPhoto){
+                                event.imageData = try? Data(contentsOf: imageUrl)
+                            }
                             DispatchQueue.main.async {
                                 if !self.friendEvents.contains(where: {$0.id == event.id}){
                                     self.friendEvents.append(event)
@@ -139,13 +142,16 @@ extension FriendsBasicView{
                             else if Int(edge.node.node?.id ?? "0") ?? 0 > 0{
                                 id = Int(edge.node.node?.id ?? "0") ?? 0
                             }
-                            let friend = User(
+                            var friend = User(
                                 id: id,
                                 name: edge.node.title.text,
                                 picture: edge.node.image.uri,
                                 isFriend: true
                             )
-                            if friend.exists(dbPool: self.appState.dbPool!) && friend.picture != ""{
+                            if let imageUrl = URL(string: friend.picture){
+                                friend.imageData = try? Data(contentsOf: imageUrl)
+                            }
+                            if friend.exists(dbPool: self.appState.dbPool!){
                                 _ = friend.updateInDB(dbPool: self.appState.dbPool!)
                             }
                             _ = friend.exists(dbPool: self.appState.cacheDbPool!) ? friend.updateInDB(dbPool: self.appState.cacheDbPool!) : friend.save(dbPool: self.appState.cacheDbPool!)

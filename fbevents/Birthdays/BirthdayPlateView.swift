@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 import SwiftDate
 
 struct BirthdayPlateView: View {
@@ -56,12 +55,7 @@ struct BirthdayPlateView: View {
     
     var body: some View {
         HStack{
-            if self.appState.settings.downloadImages && friend.picture != ""{
-                WebImage(url: URL(string: friend.picture))
-                    .resizable()
-                    .frame(width: 70, height: 70, alignment: .leading)
-                    .padding(.trailing)
-            }
+            ImageView(height: 70, width: 70, imageData: friend.imageData)
             VStack(alignment: .leading){
                 Text(friend.name)
                     .font(.title)

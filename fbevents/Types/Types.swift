@@ -26,6 +26,7 @@ struct Actor: BasicActorData, Codable, Equatable, Hashable, Identifiable, Persis
     var type: ActorType
     var name: String
     var picture: String
+    var imageData: Data?
     
     static func ==(lhs: Actor, rhs: Actor) -> Bool {
         return lhs.id == rhs.id
@@ -40,6 +41,7 @@ struct User: BasicActorData, Codable, Identifiable, Equatable, Hashable, Persist
     var birthDay: Int?
     var birthMonth: Int?
     var birthdate: String?
+    var imageData: Data?
     
     static func ==(lhs: User, rhs: User) -> Bool {
         return lhs.id == rhs.id
@@ -51,6 +53,7 @@ struct Page: BasicActorData, Codable, Identifiable, Equatable, Hashable, Persist
     var name: String
     var picture: String
     var address: String?
+    var imageData: Data?
     
     static func ==(lhs: Page, rhs: Page) -> Bool {
         return lhs.id == rhs.id

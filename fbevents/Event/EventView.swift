@@ -143,7 +143,7 @@ struct EventView: View {
                                 }
                             }.padding(.bottom)
                         }
-                        EventImageView(url: URL(string: self.event!.coverPhoto))
+                        EventImageView(data: self.event!.imageData)
                         VStack(alignment: .leading, spacing: 10){
                             Group{
                                 VStack{

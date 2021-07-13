@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
+
 
 struct PagePlateView: View {
     @EnvironmentObject var appState: AppState
@@ -16,16 +16,7 @@ struct PagePlateView: View {
     
     var body: some View {
         HStack{
-            if self.appState.settings.downloadImages && page.picture != ""{
-                WebImage(url: URL(string: page.picture))
-                    .placeholder(Image(systemName: "photo"))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 70, height: 70, alignment: .leading)
-            }
-            else{
-                Text(page.picture)
-            }
+            ImageView(height: 70, width: 70, imageData: page.imageData)
             VStack(alignment: .leading){
                 Text(page.name)
                     .font(.headline)

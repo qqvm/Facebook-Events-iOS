@@ -43,7 +43,7 @@ struct UserSettings: Codable{
     internal var userId: Int
     var deviceId: String
     var advId: String
-    static let appId = 350685531728 // Maybe needed in some requests to Facebook APIs in the future.
+    static let appId = 350685531728 // May be needed in some requests to Facebook APIs in the future.
     
     var reloadIntervalHours: Int = 1
     var birthdayNotificationIntervalDays: Int = 1

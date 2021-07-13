@@ -7,12 +7,11 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 
 struct EventImageView: View {
     @EnvironmentObject var appState: AppState
-    var url: URL?
+    var data: Data?
     @State var maxWidth: CGFloat = 365
     @State var maxHeight: CGFloat = 205
     @State var minWidth: CGFloat = 180
@@ -22,22 +21,27 @@ struct EventImageView: View {
     
     var body: some View {
         VStack{
-            if url != nil && (self.appState.settings.downloadImages || self.appState.selectedView == .favorites){
-                WebImage(url: url)
-                    .placeholder(){
-                        Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                    }
+            if let imageData = data{
+                if let uiImage = UIImage(data: imageData){
+                    Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
                     .frame(minWidth: minWidth, idealWidth: maxWidth, maxWidth: maxWidth, minHeight: minHeight, idealHeight: maxHeight, maxHeight: maxHeight, alignment: .center)
+                }
+                else{
+                    Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.bottom)
+                    .frame(width: minWidth, height: minHeight, alignment: .center)
+                }
             }
             else{
                 Image(systemName: "photo")
                 .resizable()
                 .scaledToFit()
                 .padding(.bottom)
+                .frame(width: minWidth, height: minHeight, alignment: .center)
             }
         }
     }

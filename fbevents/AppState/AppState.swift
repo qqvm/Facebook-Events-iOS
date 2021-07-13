@@ -8,7 +8,6 @@
 import SwiftUI
 import GRDB
 import Network
-import SDWebImageSwiftUI
 import os.log
 
 
@@ -127,7 +126,6 @@ final class AppState: ObservableObject{
         selectedView = settings.startView
         previousView = settings.startView
         
-        SDImageCache.shared.config.maxDiskSize = 1024 * 1024 * 100 // 100 MB
         URLCache.shared.diskCapacity = 1024 * 1024 * 100
         
         networkMonitor.pathUpdateHandler = { path in
@@ -189,12 +187,6 @@ final class AppState: ObservableObject{
             try dbPool!.vacuum()
             try cacheDbPool!.vacuum()
             URLCache.shared.removeAllCachedResponses()
-            SDImageCache.shared.clearMemory()
-            SDImageCache.shared.clearDisk(){
-                if let completion = completion{
-                    completion()
-                }
-            }
         }
         catch{
             self.logger.log(error)
@@ -208,12 +200,6 @@ final class AppState: ObservableObject{
             self.settings.migrateDB()
             try cacheDbPool!.vacuum()
             URLCache.shared.removeAllCachedResponses()
-            SDImageCache.shared.clearMemory()
-            SDImageCache.shared.clearDisk(){
-                if let completion = completion{
-                    completion()
-                }
-            }
         }
         catch{
             self.logger.log(error)

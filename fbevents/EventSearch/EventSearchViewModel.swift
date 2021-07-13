@@ -62,7 +62,7 @@ extension EventSearchView {
                                     continue
                                 }
                             }
-                            let newEvent = Event(
+                            var newEvent = Event(
                                 id: Int(edge.node.id)!,
                                 name: edge.node.name,
                                 coverPhoto: edge.node.coverPhoto?.photo.image.uri ?? "",
@@ -87,6 +87,9 @@ extension EventSearchView {
                                 timeOfTheDay: AppState.getTimeOfTheDay(from: edge.node.startTimestamp),
                                 weekDay: AppState.getWeekDay(from: edge.node.startTimestamp)
                             )
+                            if let imageUrl = URL(string: newEvent.coverPhoto){
+                                newEvent.imageData = try? Data(contentsOf: imageUrl)
+                            }
                             if !newEvent.exists(dbPool: self.appState.cacheDbPool!){
                                 _ = newEvent.save(dbPool: self.appState.cacheDbPool!)
                             }
@@ -209,12 +212,15 @@ extension EventSearchView {
                     if let edges = response.data?.serpResponse?.results.edges{
                         for edge in edges{
                             if let profile = edge.relayRenderingStrategy.viewModel.profile{
-                                let event = SimpleEvent(
+                                var event = SimpleEvent(
                                     id: Int(profile.id)!,
                                     name: profile.name,
                                     coverPhoto: profile.profilePicture.uri,
                                     dayTimeSentence: edge.relayRenderingStrategy.viewModel.prominentSnippetConfig?.textWithEntities.text ?? "No information"
                                 )
+                                if let imageUrl = URL(string: event.coverPhoto){
+                                    event.imageData = try? Data(contentsOf: imageUrl)
+                                }
                                 DispatchQueue.main.async {
                                     self.appState.searchEvents.append(event)
                                 }
@@ -259,13 +265,15 @@ extension EventSearchView {
                 }){(response: Networking.CalendarPageResponse) in
                     if let edges = response.data?.viewer.actor.allEvents?.edges{
                         for edge in edges{
-
-                            let newEvent = SimpleEvent(
+                            var newEvent = SimpleEvent(
                                 id: Int(edge.node.id)!,
                                 name: edge.node.name,
                                 coverPhoto: edge.node.coverMediaRenderer.coverPhoto?.photo.image.uri ?? "",
                                 dayTimeSentence: AppState.getFormattedDate(edge.node.utcStartTimestamp, isLong: true, withYear: true)
                             )
+                            if let imageUrl = URL(string: newEvent.coverPhoto){
+                                newEvent.imageData = try? Data(contentsOf: imageUrl)
+                            }
                             DispatchQueue.main.async {
                                 if !self.nonSearchEvents.contains(where: {$0.id == newEvent.id}){
                                     self.nonSearchEvents.append(newEvent)

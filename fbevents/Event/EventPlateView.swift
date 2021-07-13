@@ -13,6 +13,11 @@ import SwiftUI
 struct EventPlateView: View{
     @EnvironmentObject var appState: AppState
     @State var event: BasicEventData
+    @State var maxWidth: CGFloat = 365
+    @State var maxHeight: CGFloat = 205
+    @State var minWidth: CGFloat = 180
+    @State var minHeight: CGFloat = 100
+    let normalRatio: CGFloat = 1.756
     @State private var isFavorite = false{
         willSet{
             let eventData = self.event as? Event
@@ -47,19 +52,19 @@ struct EventPlateView: View{
             if eventData != nil{
                 VStack{
                     HStack(alignment: .center){
-                        if eventData?.isCanceled ?? false {
+                        if eventData!.isCanceled ?? false {
                             Image(systemName: "minus.circle").foregroundColor(.red)
                         }
-                        if eventData?.expired ?? false {
+                        if eventData!.expired {
                             Image(systemName: "exclamationmark.arrow.circlepath").foregroundColor(.red)
                         }
-                        if eventData?.hasChildEvents ?? false {
+                        if eventData!.hasChildEvents {
                             Image(systemName: "cube.box").foregroundColor(.gray)
                         }
-                        else if eventData?.parentEventId ?? 0 > 0 {
+                        else if eventData!.parentEventId ?? 0 > 0 {
                             Image(systemName: "list.number").foregroundColor(.gray)
                         }
-                        if eventData?.isOnline ?? false {
+                        if eventData!.isOnline ?? false {
                             Image(systemName: "globe").foregroundColor(.gray)
                         }
                         Spacer()
@@ -74,7 +79,7 @@ struct EventPlateView: View{
                         }, label: {Image(systemName: isFavorite ? "star.fill" : "star").foregroundColor(self.appState.selectedView != .favorites && eventData!.expired ? .gray : .blue)})
                         }
                     }.padding(.horizontal)
-                    EventImageView(url: URL(string: eventData!.coverPhoto))
+                    EventImageView(data: eventData!.imageData)
                     Text(eventData!.name)
                         .font(.headline)
                         .padding(.trailing)
@@ -95,7 +100,7 @@ struct EventPlateView: View{
                             .disabled(true)
 
                     }.padding(.horizontal)
-                    EventImageView(url: URL(string: event.coverPhoto))
+                    EventImageView(data: event.imageData)
                     Text(event.name)
                         .font(.headline)
                         .padding(.trailing)

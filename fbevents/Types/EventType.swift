@@ -30,6 +30,7 @@ protocol BasicEventData{
     var name: String{get set}
     var coverPhoto: String{get set}
     var dayTimeSentence: String{get set}
+    var imageData: Data? {get set}
 }
 
 struct SimpleEvent: BasicEventData, Equatable, Hashable, Identifiable{
@@ -37,6 +38,7 @@ struct SimpleEvent: BasicEventData, Equatable, Hashable, Identifiable{
     var name: String
     var coverPhoto: String
     var dayTimeSentence: String
+    var imageData: Data?
     
     static func ==(lhs: SimpleEvent, rhs: SimpleEvent) -> Bool {
         return lhs.id == rhs.id
@@ -71,6 +73,7 @@ struct Event: Codable, Equatable, Hashable, Identifiable, PersistableData, Basic
     var endDate: Date?
     var timeOfTheDay: String
     var weekDay: Int
+    var imageData: Data?
     
     var hosts = [Actor]()
     var eventKind: String?

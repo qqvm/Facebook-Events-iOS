@@ -75,6 +75,10 @@ extension AppState{
                              categoryId: Int(eventInfo.eventCategoryData?.categoryId ?? "")
                         )
                         
+                        if let imageUrl = URL(string: newEvent.coverPhoto){
+                            newEvent.imageData = try? Data(contentsOf: imageUrl)
+                        }
+                        
                         if let childs = eventInfo.ticketingChildEvents{
                             newEvent.childEvents = [SimpleChildEvent]()
                             let now = Int(Date().timeIntervalSince1970)

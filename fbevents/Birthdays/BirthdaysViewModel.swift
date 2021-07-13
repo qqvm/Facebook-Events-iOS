@@ -38,7 +38,7 @@ extension BirthdaysTabView{
                     URLQueryItem(name: "fb_api_caller_class", value: "RelayModern"),
                     URLQueryItem(name: "server_timestamps", value: "true")
                 ]
-                appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: true){(response: Networking.BirthdayFriendsResponse) in
+                appState.networkManager?.postURL(urlComponents: components, withToken: true, logNetworkActivity: false){(response: Networking.BirthdayFriendsResponse) in
                     let slices = [(0, response.data?.today?.allFriends), (1, response.data?.recent?.allFriends), (2, response.data?.upcoming?.allFriends), (3, response.data?.viewer.allFriends)]
                     for (i, slice) in slices{
                         if let edges = slice?.edges{
@@ -101,8 +101,11 @@ extension BirthdaysTabView{
                                         let date = "0001-\(friend.birthMonth!)-\(friend.birthDay!) 00:00".toDate()
                                         friend.birthdate = "\(friend.birthDay!) \(date?.monthName(.default) ?? "/ \(friend.birthMonth!)")"
                                     }
+                                    if let imageUrl = URL(string: friend.picture){
+                                        friend.imageData = try? Data(contentsOf: imageUrl)
+                                    }
                                     if friend.exists(dbPool: self.appState.dbPool!){
-                                        _ = friend.save(dbPool: self.appState.dbPool!)
+                                        _ = friend.updateInDB(dbPool: self.appState.dbPool!)
                                     }
                                     _ = friend.exists(dbPool: self.appState.cacheDbPool!) ? friend.updateInDB(dbPool: self.appState.cacheDbPool!) : friend.save(dbPool: self.appState.cacheDbPool!)
                                     DispatchQueue.main.async {

@@ -88,8 +88,8 @@
             filePath = "fbevents/Birthdays/BirthdayPlateView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -104,8 +104,8 @@
             filePath = "fbevents/Birthdays/BirthdayPlateView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -120,8 +120,8 @@
             filePath = "fbevents/Birthdays/BirthdayPlateView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -215,8 +215,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "loadPlacesSearchPage()"
             landmarkType = "7">
          </BreakpointContent>
@@ -231,8 +231,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "loadPageRecurringEventsPage(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -247,8 +247,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "loadPageUpcomingEventsPage(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -263,8 +263,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "loadPageUpcomingEventsPage(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -279,8 +279,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "243"
-            endingLineNumber = "243"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "loadPageRecurringEventsPage(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -295,8 +295,8 @@
             filePath = "fbevents/Pages/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "loadPlacesSearchPage()"
             landmarkType = "7">
          </BreakpointContent>
@@ -327,8 +327,8 @@
             filePath = "fbevents/Friends/FriendsViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "loadFriendsFromDB()"
             landmarkType = "7">
          </BreakpointContent>
@@ -378,6 +378,22 @@
             startingLineNumber = "38"
             endingLineNumber = "38"
             landmarkName = "saveSelection(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1ABD2EE4-5271-4FE7-8B79-E27656E96322"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fbevents/Friends/FriendsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "loadMyFriendsPage()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
