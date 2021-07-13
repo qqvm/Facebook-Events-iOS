@@ -43,7 +43,7 @@ struct BirthdayPlateView: View {
     
     func setNotification(date: Date? = nil, bdate: Date? = nil){
         if !self.friend.exists(dbPool: self.appState.dbPool!){
-            _ = self.friend.save(dbPool: self.appState.dbPool!)
+            _ = self.friend.updateInDB(dbPool: self.appState.dbPool!)
         }
         if date != nil && bdate != nil{
             SetNotification(id: "friend_\(self.friend.id)", title: self.friend.name, subtitle: "has a birthday on \(AppState.getFormattedDate(Int(bdate!.timeIntervalSince1970), isLong: true))", date: date!)

@@ -44,7 +44,7 @@ extension BirthdaysTabView{
                         if let edges = slice?.edges{
                             for edge in edges{
                                 if let node = edge.node{
-                                    let friend = User(
+                                    var friend = User(
                                         id: Int(node.id)!,
                                         name: node.name,
                                         picture: node.profilePicture.uri,
@@ -53,8 +53,15 @@ extension BirthdaysTabView{
                                         birthMonth: node.birthdate.month,
                                         birthdate: node.birthdate.text
                                     )
+                                    if friend.birthdate == nil && friend.birthDay != nil && friend.birthMonth != nil{
+                                        let date = "0001-\(friend.birthMonth!)-\(friend.birthDay!) 00:00".toDate()
+                                        friend.birthdate = "\(friend.birthDay!) \(date?.monthName(.default) ?? "/ \(friend.birthMonth!)")"
+                                    }
+                                    if let imageUrl = URL(string: friend.picture){
+                                        friend.imageData = try? Data(contentsOf: imageUrl)
+                                    }
                                     if friend.exists(dbPool: self.appState.dbPool!){
-                                        _ = friend.save(dbPool: self.appState.dbPool!)
+                                        _ = friend.updateInDB(dbPool: self.appState.dbPool!)
                                     }
                                     DispatchQueue.main.async {
                                         switch i{
@@ -63,17 +70,29 @@ extension BirthdaysTabView{
                                                 self.today.append(friend)
                                             }
                                         case 1:
-                                        if !self.recent.contains(friend){
-                                            self.recent.append(friend)
-                                        }
+                                            let now = Date()
+                                            if !self.recent.contains(friend) && (friend.birthDay != now.day && friend.birthMonth == now.month){
+                                                self.recent.append(friend)
+                                            }
+                                            else if !self.today.contains(friend) && friend.birthDay == Date().day && friend.birthMonth == now.month{
+                                                self.today.append(friend)
+                                            }
                                         case 2:
-                                        if !self.upcoming.contains(friend){
-                                            self.upcoming.append(friend)
-                                        }
+                                            let now = Date()
+                                            if !self.upcoming.contains(friend) && (friend.birthDay != now.day && friend.birthMonth == now.month){
+                                                self.upcoming.append(friend)
+                                            }
+                                            else if !self.today.contains(friend) && friend.birthDay == Date().day && friend.birthMonth == now.month{
+                                                self.today.append(friend)
+                                            }
                                         case 3:
-                                        if !self.recent.contains(friend){
-                                            self.recent.append(friend)
-                                        }
+                                            let now = Date()
+                                            if !self.recent.contains(friend) && (friend.birthDay != now.day && friend.birthMonth == now.month){
+                                                self.recent.append(friend)
+                                            }
+                                            else if !self.today.contains(friend) && friend.birthDay == Date().day && friend.birthMonth == now.month{
+                                                self.today.append(friend)
+                                            }
                                         default:
                                             break
                                         }

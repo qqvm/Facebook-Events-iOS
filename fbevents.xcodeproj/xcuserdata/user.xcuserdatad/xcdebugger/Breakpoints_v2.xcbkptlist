@@ -311,8 +311,8 @@
             filePath = "fbevents/Birthdays/BirthdaysViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "loadBirthdayFriends()"
             landmarkType = "7">
          </BreakpointContent>
@@ -394,6 +394,22 @@
             startingLineNumber = "151"
             endingLineNumber = "151"
             landmarkName = "loadMyFriendsPage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AF08595D-A3C4-47F9-A20B-B66C6CAAE6DF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fbevents/Birthdays/BirthdaysViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "loadBirthdayFriends()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
